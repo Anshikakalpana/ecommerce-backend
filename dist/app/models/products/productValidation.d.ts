@@ -31,8 +31,8 @@ declare const productValidationSchema: z.ZodObject<{
     isFeatured: z.ZodOptional<z.ZodBoolean>;
     isNewArrival: z.ZodOptional<z.ZodBoolean>;
     status: z.ZodDefault<z.ZodEnum<{
-        active: "active";
         inactive: "inactive";
+        active: "active";
         out_of_stock: "out_of_stock";
     }>>;
     sellerId: z.ZodOptional<z.ZodString>;

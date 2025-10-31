@@ -1,5 +1,4 @@
-import mongoose, { Schema, Document } from "mongoose";
-import {} from "./cart.js";
+import mongoose, { Schema } from "mongoose";
 // CartItem Schema
 const cartItemSchema = new Schema({
     productId: { type: String, required: true },

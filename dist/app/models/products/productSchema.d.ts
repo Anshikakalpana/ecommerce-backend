@@ -1,11 +1,11 @@
 import mongoose from "mongoose";
 declare const _default: mongoose.Model<{
-    brand: string;
     name: string;
+    description: string;
+    brand: string;
     slug: string;
     price: number;
     finalPrice: number;
-    description: string;
     category: string;
     imageUrl: string[];
     tags: string[];
@@ -13,26 +13,26 @@ declare const _default: mongoose.Model<{
     totalReviews: number;
     averageRating: number;
     variants: mongoose.Types.DocumentArray<{
+        size: string;
         variantid: string;
         variantName: string;
         additionalPrice: number;
         stock: number;
         color: string;
-        size: string;
     }, mongoose.Types.Subdocument<mongoose.mongo.BSON.ObjectId, any, {
+        size: string;
         variantid: string;
         variantName: string;
         additionalPrice: number;
         stock: number;
         color: string;
-        size: string;
     }> & {
+        size: string;
         variantid: string;
         variantName: string;
         additionalPrice: number;
         stock: number;
         color: string;
-        size: string;
     }>;
     comments: mongoose.Types.DocumentArray<{
         date: NativeDate;
@@ -57,7 +57,7 @@ declare const _default: mongoose.Model<{
     sku: string;
     isFeatured: boolean;
     isNewArrival: boolean;
-    status: "active" | "inactive" | "out_of_stock";
+    status: "inactive" | "active" | "out_of_stock";
     skinType: string[];
     sellerId?: string | null;
     returnPolicy?: string | null;
@@ -67,12 +67,12 @@ declare const _default: mongoose.Model<{
     netQuantity?: string | null;
     originCountry?: string | null;
 } & mongoose.DefaultTimestampProps, {}, {}, {}, mongoose.Document<unknown, {}, {
-    brand: string;
     name: string;
+    description: string;
+    brand: string;
     slug: string;
     price: number;
     finalPrice: number;
-    description: string;
     category: string;
     imageUrl: string[];
     tags: string[];
@@ -80,26 +80,26 @@ declare const _default: mongoose.Model<{
     totalReviews: number;
     averageRating: number;
     variants: mongoose.Types.DocumentArray<{
+        size: string;
         variantid: string;
         variantName: string;
         additionalPrice: number;
         stock: number;
         color: string;
-        size: string;
     }, mongoose.Types.Subdocument<mongoose.mongo.BSON.ObjectId, any, {
+        size: string;
         variantid: string;
         variantName: string;
         additionalPrice: number;
         stock: number;
         color: string;
-        size: string;
     }> & {
+        size: string;
         variantid: string;
         variantName: string;
         additionalPrice: number;
         stock: number;
         color: string;
-        size: string;
     }>;
     comments: mongoose.Types.DocumentArray<{
         date: NativeDate;
@@ -124,7 +124,7 @@ declare const _default: mongoose.Model<{
     sku: string;
     isFeatured: boolean;
     isNewArrival: boolean;
-    status: "active" | "inactive" | "out_of_stock";
+    status: "inactive" | "active" | "out_of_stock";
     skinType: string[];
     sellerId?: string | null;
     returnPolicy?: string | null;
@@ -136,12 +136,12 @@ declare const _default: mongoose.Model<{
 } & mongoose.DefaultTimestampProps, {}, {
     timestamps: true;
 }> & {
-    brand: string;
     name: string;
+    description: string;
+    brand: string;
     slug: string;
     price: number;
     finalPrice: number;
-    description: string;
     category: string;
     imageUrl: string[];
     tags: string[];
@@ -149,26 +149,26 @@ declare const _default: mongoose.Model<{
     totalReviews: number;
     averageRating: number;
     variants: mongoose.Types.DocumentArray<{
+        size: string;
         variantid: string;
         variantName: string;
         additionalPrice: number;
         stock: number;
         color: string;
-        size: string;
     }, mongoose.Types.Subdocument<mongoose.mongo.BSON.ObjectId, any, {
+        size: string;
         variantid: string;
         variantName: string;
         additionalPrice: number;
         stock: number;
         color: string;
-        size: string;
     }> & {
+        size: string;
         variantid: string;
         variantName: string;
         additionalPrice: number;
         stock: number;
         color: string;
-        size: string;
     }>;
     comments: mongoose.Types.DocumentArray<{
         date: NativeDate;
@@ -193,7 +193,7 @@ declare const _default: mongoose.Model<{
     sku: string;
     isFeatured: boolean;
     isNewArrival: boolean;
-    status: "active" | "inactive" | "out_of_stock";
+    status: "inactive" | "active" | "out_of_stock";
     skinType: string[];
     sellerId?: string | null;
     returnPolicy?: string | null;
@@ -209,12 +209,12 @@ declare const _default: mongoose.Model<{
 }, mongoose.Schema<any, mongoose.Model<any, any, any, any, any, any>, {}, {}, {}, {}, {
     timestamps: true;
 }, {
-    brand: string;
     name: string;
+    description: string;
+    brand: string;
     slug: string;
     price: number;
     finalPrice: number;
-    description: string;
     category: string;
     imageUrl: string[];
     tags: string[];
@@ -222,26 +222,26 @@ declare const _default: mongoose.Model<{
     totalReviews: number;
     averageRating: number;
     variants: mongoose.Types.DocumentArray<{
+        size: string;
         variantid: string;
         variantName: string;
         additionalPrice: number;
         stock: number;
         color: string;
-        size: string;
     }, mongoose.Types.Subdocument<mongoose.mongo.BSON.ObjectId, any, {
+        size: string;
         variantid: string;
         variantName: string;
         additionalPrice: number;
         stock: number;
         color: string;
-        size: string;
     }> & {
+        size: string;
         variantid: string;
         variantName: string;
         additionalPrice: number;
         stock: number;
         color: string;
-        size: string;
     }>;
     comments: mongoose.Types.DocumentArray<{
         date: NativeDate;
@@ -266,7 +266,7 @@ declare const _default: mongoose.Model<{
     sku: string;
     isFeatured: boolean;
     isNewArrival: boolean;
-    status: "active" | "inactive" | "out_of_stock";
+    status: "inactive" | "active" | "out_of_stock";
     skinType: string[];
     sellerId?: string | null;
     returnPolicy?: string | null;
@@ -276,12 +276,12 @@ declare const _default: mongoose.Model<{
     netQuantity?: string | null;
     originCountry?: string | null;
 } & mongoose.DefaultTimestampProps, mongoose.Document<unknown, {}, mongoose.FlatRecord<{
-    brand: string;
     name: string;
+    description: string;
+    brand: string;
     slug: string;
     price: number;
     finalPrice: number;
-    description: string;
     category: string;
     imageUrl: string[];
     tags: string[];
@@ -289,26 +289,26 @@ declare const _default: mongoose.Model<{
     totalReviews: number;
     averageRating: number;
     variants: mongoose.Types.DocumentArray<{
+        size: string;
         variantid: string;
         variantName: string;
         additionalPrice: number;
         stock: number;
         color: string;
-        size: string;
     }, mongoose.Types.Subdocument<mongoose.mongo.BSON.ObjectId, any, {
+        size: string;
         variantid: string;
         variantName: string;
         additionalPrice: number;
         stock: number;
         color: string;
-        size: string;
     }> & {
+        size: string;
         variantid: string;
         variantName: string;
         additionalPrice: number;
         stock: number;
         color: string;
-        size: string;
     }>;
     comments: mongoose.Types.DocumentArray<{
         date: NativeDate;
@@ -333,7 +333,7 @@ declare const _default: mongoose.Model<{
     sku: string;
     isFeatured: boolean;
     isNewArrival: boolean;
-    status: "active" | "inactive" | "out_of_stock";
+    status: "inactive" | "active" | "out_of_stock";
     skinType: string[];
     sellerId?: string | null;
     returnPolicy?: string | null;
@@ -345,12 +345,12 @@ declare const _default: mongoose.Model<{
 } & mongoose.DefaultTimestampProps>, {}, mongoose.ResolveSchemaOptions<{
     timestamps: true;
 }>> & mongoose.FlatRecord<{
-    brand: string;
     name: string;
+    description: string;
+    brand: string;
     slug: string;
     price: number;
     finalPrice: number;
-    description: string;
     category: string;
     imageUrl: string[];
     tags: string[];
@@ -358,26 +358,26 @@ declare const _default: mongoose.Model<{
     totalReviews: number;
     averageRating: number;
     variants: mongoose.Types.DocumentArray<{
+        size: string;
         variantid: string;
         variantName: string;
         additionalPrice: number;
         stock: number;
         color: string;
-        size: string;
     }, mongoose.Types.Subdocument<mongoose.mongo.BSON.ObjectId, any, {
+        size: string;
         variantid: string;
         variantName: string;
         additionalPrice: number;
         stock: number;
         color: string;
-        size: string;
     }> & {
+        size: string;
         variantid: string;
         variantName: string;
         additionalPrice: number;
         stock: number;
         color: string;
-        size: string;
     }>;
     comments: mongoose.Types.DocumentArray<{
         date: NativeDate;
@@ -402,7 +402,7 @@ declare const _default: mongoose.Model<{
     sku: string;
     isFeatured: boolean;
     isNewArrival: boolean;
-    status: "active" | "inactive" | "out_of_stock";
+    status: "inactive" | "active" | "out_of_stock";
     skinType: string[];
     sellerId?: string | null;
     returnPolicy?: string | null;

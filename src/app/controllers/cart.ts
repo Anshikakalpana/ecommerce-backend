@@ -19,7 +19,7 @@ const createProductForCart = async (req: any, res: any) => {
     const productId: string = req.params.productId;
     const validatedProduct: CartItem = cartItemSchema.parse(req.body);
 
-    // 1️⃣ Fetch product data from DB
+    
     const product = await Product.findById(productId);
     if (!product) {
       return res.status(404).json({
@@ -46,7 +46,7 @@ const createProductForCart = async (req: any, res: any) => {
       ...(validatedProduct.maxAllowedPerOrder !== undefined && { maxAllowedPerOrder: validatedProduct.maxAllowedPerOrder }),
     };
 
-    // 3️⃣ Pass userId also
+
     const result = await service.productToCart( productToAdd);
 
     return res.status(201).json({

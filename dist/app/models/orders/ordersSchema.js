@@ -1,5 +1,4 @@
-import mongoose, { Schema, Document } from "mongoose";
-import {} from "./orders.js";
+import mongoose, { Schema } from "mongoose";
 // OrderItem
 const orderItemSchema = new Schema({
     brand: { type: String, required: true },

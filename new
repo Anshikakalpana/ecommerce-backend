@@ -1,0 +1,318 @@
+
+
+// import express from 'express';
+// import jwt from 'jsonwebtoken';
+// import bcrypt from 'bcrypt';
+// import pool from '../db/dbData.js';
+// import { authMiddleware, verifyrefreshtoken } from '../middleware/authMiddleware.js';
+// import cookie from 'cookie-parser';
+// import redis from "../db/redis.js";
+// import ratelimiter from '../middleware/ratelimiter.js';
+// import { sendEmail } from '../middleware/verification.js';
+// import { authorizeRoles } from '../middleware/authroles.js';
+// const router = express.Router();
+// router.use(cookie());
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// router.post('/login',ratelimiter, async (req, res) => {
+//   try {
+//     const { email, password  } = req.body;
+
+//       if ( !email || !password ) {
+//       return res.status(400).json({ success: false, message: 'All fields are required' });
+//     }
+    
+//     const existingUser = await pool.query(
+//       `SELECT username, email, password FROM users WHERE email=$1`,
+//       [email]
+//     );
+
+//     if (existingUser.rows.length === 0) {
+//       return res.status(404).json({ success: false, message: 'User not found' });
+//     }
+    
+
+//     const validPassword = await bcrypt.compare(password, existingUser.rows[0].password);
+
+
+//     if (!validPassword) {
+//       return res.status(401).json({ success: false, message: 'Invalid credentials' });
+//     }
+//      const verificationCode = Math.floor(100000 +Math.random()*900000).toString();
+
+// await redis.set(`verify:${email}`, verificationCode, 'EX', 600); 
+//   // await sendEmail(email, verificationCode);
+//   // const {code} = req.body.code;
+//   // if(code!= redis.verify:${email}){
+//   // return res.status(401).json({ success: false, message: 'Invalid credentials' });
+//   // }
+
+//     const ip = req.socket?.remoteAddress || req.ip;
+
+//      console.log(ip.slice(0,8));
+
+
+//   // Fetch the role of the user
+// const roleResult = await pool.query(
+//   `SELECT r.name as role
+//    FROM roles r
+//    JOIN user_roles ur ON ur.role_id = r.id
+//    JOIN users u ON u.id = ur.user_id
+//    WHERE u.email=$1`,
+//   [email]
+// );
+// const role = roleResult.rows[0].role;
+// const username =roleResult.rows[0].username;
+
+//     const accesstoken = jwt.sign({ username, email , role }, process.env.JWT_SECRET, { expiresIn: '15m' });
+//     const refreshtoken = jwt.sign({ username, email , role  }, process.env.JWT_REFRESH_SECRET, { expiresIn: '7d' });
+
+//     await redis.sadd(`refreshTokens:${email}`, refreshtoken);
+//     await redis.expire(`refreshTokens:${email}`, 7 * 24 * 60 * 60);
+
+//     res
+//       .cookie("accesstoken", accesstoken, { httpOnly: true, secure: true ,sameSite: "lax"})
+//       .cookie("refreshtoken", refreshtoken, { httpOnly: true, secure: true,sameSite: "lax" })
+//       .json({ success: true, accesstoken, refreshtoken ,ip ,  verificationCode  , role});
+
+     
+
+
+//   } catch (e) {
+//     console.error(e);
+//     res.status(500).json({ success: false, message: 'Login failed' });
+//   }
+// });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// //refreshing both the accesstoken and the refreshtoken for security purposes.....firstlt accessing the new accesstoken from the already refreshtoken saved in redis database 
+// //then renewing the refreshtoken 
+
+// router.post("/refresh", async (req, res) => {
+//   try {
+//     const { refreshtoken } = req.cookies; 
+
+//     if (!refreshtoken) {
+//       return res.status(401).json({ success: false, message: "Missing refresh token" });
+//     }
+
+//     const decoded = jwt.verify(refreshtoken, process.env.JWT_REFRESH_SECRET);
+
+//     const isMember = await redis.sismember(`refreshTokens:${decoded.email}`, refreshtoken);
+//     if (!isMember) {
+//       res.clearCookie("accesstoken");
+//       res.clearCookie("refreshtoken");
+//       return res.status(403).json({ success: false, message: "Invalid session" });
+//     }
+
+//     const newAccessToken = jwt.sign(
+//       { username: decoded.username, email: decoded.email , role: decoded.role },
+//       process.env.JWT_SECRET,
+//       { expiresIn: "15m" }
+//     );
+
+
+
+//     //rotate refresh token
+//     const newRefreshToken=jwt.sign(
+//       { username: decoded.username, email: decoded.email , role: decoded.role },
+//       process.env.JWT_REFRESH_SECRET,
+//       { expiresIn: "7d" }
+//     );
+//     await redis.srem(`refreshTokens:${decoded.email}`, refreshtoken);
+//     await redis.sadd(`refreshTokens:${decoded.email}`, newRefreshToken);
+//     await redis.expire(`refreshTokens:${decoded.email}`, 7 * 24 * 60 * 60
+//     )
+
+
+
+
+
+
+//     res.cookie("accesstoken", newAccessToken, { httpOnly: true, secure: true });
+
+// res.cookie("refreshtoken", newRefreshToken, { httpOnly: true, secure: true ,sameSite: "lax"})
+// return res.json({ success: true, accesstoken: newAccessToken  });
+
+
+
+//   } catch (err) {
+//     console.error(err);
+//     res.clearCookie("accesstoken");
+//     res.clearCookie("refreshtoken");
+//     return res.status(403).json({ success: false, message: "Invalid refresh token" });
+//   }
+// });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// router.delete("/delete", authMiddleware, async (req, res) => {
+//   try {
+//     const { password } = req.body;
+
+//     if (!password) {
+//       return res.status(400).json({ success: false, message: "Password is required to delete account" });
+//     }
+
+//     const user = await pool.query("SELECT password FROM users WHERE email=$1", [req.user.email]);
+
+//     if (user.rows.length === 0) {
+//       return res.status(404).json({ success: false, message: "User not found" });
+//     }
+
+//     const validPassword = await bcrypt.compare(password, user.rows[0].password);
+//     if (!validPassword) {
+//       return res.status(401).json({ success: false, message: "Invalid password" });
+//     }
+
+//     await pool.query("DELETE FROM users WHERE email=$1", [req.user.email]);
+//     await redis.del(`refreshTokens:${req.user.email}`);
+
+//     res.clearCookie("accesstoken");
+//     res.clearCookie("refreshtoken");
+
+//     res.json({ success: true, message: "User account deleted successfully" });
+
+//   } catch (err) {
+//     console.error(err);
+//     res.status(500).json({ success: false, message: "Server error" });
+//   }
+// });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// router.post("/logout", async (req, res) => {
+//   try {
+//     const { refreshtoken } = req.cookies;
+//     if (!refreshtoken) return res.status(400).json({ success: false, message: "No token" });
+
+//     const decoded = jwt.verify(refreshtoken, process.env.JWT_REFRESH_SECRET);
+//     await redis.srem(`refreshTokens:${decoded.email}`, refreshtoken);
+
+//     res.clearCookie("accesstoken");
+//     res.clearCookie("refreshtoken");
+
+//     return res.json({ success: true, message: "Logged out from this device" });
+//   } catch (err) {
+//     console.error(err);
+//     res.status(500).json({ success: false, message: "Logout failed" });
+//   }
+// });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// router.post("/logoutAll", authMiddleware, async (req, res) => {
+//   try {
+//     await redis.del(`refreshTokens:${req.user.email}`); 
+//     res.clearCookie("accesstoken");
+//     res.clearCookie("refreshtoken");
+//     return res.json({ success: true, message: "Logged out from all devices" });
+//   } catch (err) {
+//     console.error(err);
+//     res.status(500).json({ success: false, message: "Logout failed" });
+//   }
+// });
+
+// export { router as authRouter };
+
+

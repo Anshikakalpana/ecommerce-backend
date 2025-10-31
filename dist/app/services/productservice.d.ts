@@ -1,12 +1,12 @@
 import type { product } from "../models/products/products.js";
 export declare const service: {
     producttodb: (productData: Partial<product>) => Promise<import("mongoose").Document<unknown, {}, {
-        brand: string;
         name: string;
+        description: string;
+        brand: string;
         slug: string;
         price: number;
         finalPrice: number;
-        description: string;
         category: string;
         imageUrl: string[];
         tags: string[];
@@ -14,26 +14,26 @@ export declare const service: {
         totalReviews: number;
         averageRating: number;
         variants: import("mongoose").Types.DocumentArray<{
+            size: string;
             variantid: string;
             variantName: string;
             additionalPrice: number;
             stock: number;
             color: string;
-            size: string;
         }, import("mongoose").Types.Subdocument<import("bson").ObjectId, any, {
+            size: string;
             variantid: string;
             variantName: string;
             additionalPrice: number;
             stock: number;
             color: string;
-            size: string;
         }> & {
+            size: string;
             variantid: string;
             variantName: string;
             additionalPrice: number;
             stock: number;
             color: string;
-            size: string;
         }>;
         comments: import("mongoose").Types.DocumentArray<{
             date: NativeDate;
@@ -58,7 +58,7 @@ export declare const service: {
         sku: string;
         isFeatured: boolean;
         isNewArrival: boolean;
-        status: "active" | "inactive" | "out_of_stock";
+        status: "inactive" | "active" | "out_of_stock";
         skinType: string[];
         sellerId?: string | null;
         returnPolicy?: string | null;
@@ -70,12 +70,12 @@ export declare const service: {
     } & import("mongoose").DefaultTimestampProps, {}, {
         timestamps: true;
     }> & {
-        brand: string;
         name: string;
+        description: string;
+        brand: string;
         slug: string;
         price: number;
         finalPrice: number;
-        description: string;
         category: string;
         imageUrl: string[];
         tags: string[];
@@ -83,26 +83,26 @@ export declare const service: {
         totalReviews: number;
         averageRating: number;
         variants: import("mongoose").Types.DocumentArray<{
+            size: string;
             variantid: string;
             variantName: string;
             additionalPrice: number;
             stock: number;
             color: string;
-            size: string;
         }, import("mongoose").Types.Subdocument<import("bson").ObjectId, any, {
+            size: string;
             variantid: string;
             variantName: string;
             additionalPrice: number;
             stock: number;
             color: string;
-            size: string;
         }> & {
+            size: string;
             variantid: string;
             variantName: string;
             additionalPrice: number;
             stock: number;
             color: string;
-            size: string;
         }>;
         comments: import("mongoose").Types.DocumentArray<{
             date: NativeDate;
@@ -127,7 +127,7 @@ export declare const service: {
         sku: string;
         isFeatured: boolean;
         isNewArrival: boolean;
-        status: "active" | "inactive" | "out_of_stock";
+        status: "inactive" | "active" | "out_of_stock";
         skinType: string[];
         sellerId?: string | null;
         returnPolicy?: string | null;
@@ -142,12 +142,12 @@ export declare const service: {
         __v: number;
     }>;
     getAllProductsFromDb: () => Promise<(import("mongoose").Document<unknown, {}, {
-        brand: string;
         name: string;
+        description: string;
+        brand: string;
         slug: string;
         price: number;
         finalPrice: number;
-        description: string;
         category: string;
         imageUrl: string[];
         tags: string[];
@@ -155,26 +155,26 @@ export declare const service: {
         totalReviews: number;
         averageRating: number;
         variants: import("mongoose").Types.DocumentArray<{
+            size: string;
             variantid: string;
             variantName: string;
             additionalPrice: number;
             stock: number;
             color: string;
-            size: string;
         }, import("mongoose").Types.Subdocument<import("bson").ObjectId, any, {
+            size: string;
             variantid: string;
             variantName: string;
             additionalPrice: number;
             stock: number;
             color: string;
-            size: string;
         }> & {
+            size: string;
             variantid: string;
             variantName: string;
             additionalPrice: number;
             stock: number;
             color: string;
-            size: string;
         }>;
         comments: import("mongoose").Types.DocumentArray<{
             date: NativeDate;
@@ -199,7 +199,7 @@ export declare const service: {
         sku: string;
         isFeatured: boolean;
         isNewArrival: boolean;
-        status: "active" | "inactive" | "out_of_stock";
+        status: "inactive" | "active" | "out_of_stock";
         skinType: string[];
         sellerId?: string | null;
         returnPolicy?: string | null;
@@ -211,12 +211,12 @@ export declare const service: {
     } & import("mongoose").DefaultTimestampProps, {}, {
         timestamps: true;
     }> & {
-        brand: string;
         name: string;
+        description: string;
+        brand: string;
         slug: string;
         price: number;
         finalPrice: number;
-        description: string;
         category: string;
         imageUrl: string[];
         tags: string[];
@@ -224,26 +224,26 @@ export declare const service: {
         totalReviews: number;
         averageRating: number;
         variants: import("mongoose").Types.DocumentArray<{
+            size: string;
             variantid: string;
             variantName: string;
             additionalPrice: number;
             stock: number;
             color: string;
-            size: string;
         }, import("mongoose").Types.Subdocument<import("bson").ObjectId, any, {
+            size: string;
             variantid: string;
             variantName: string;
             additionalPrice: number;
             stock: number;
             color: string;
-            size: string;
         }> & {
+            size: string;
             variantid: string;
             variantName: string;
             additionalPrice: number;
             stock: number;
             color: string;
-            size: string;
         }>;
         comments: import("mongoose").Types.DocumentArray<{
             date: NativeDate;
@@ -268,7 +268,7 @@ export declare const service: {
         sku: string;
         isFeatured: boolean;
         isNewArrival: boolean;
-        status: "active" | "inactive" | "out_of_stock";
+        status: "inactive" | "active" | "out_of_stock";
         skinType: string[];
         sellerId?: string | null;
         returnPolicy?: string | null;
@@ -283,12 +283,12 @@ export declare const service: {
         __v: number;
     })[]>;
     getProductByIdFromDb: (productId: string) => Promise<(import("mongoose").Document<unknown, {}, {
-        brand: string;
         name: string;
+        description: string;
+        brand: string;
         slug: string;
         price: number;
         finalPrice: number;
-        description: string;
         category: string;
         imageUrl: string[];
         tags: string[];
@@ -296,26 +296,26 @@ export declare const service: {
         totalReviews: number;
         averageRating: number;
         variants: import("mongoose").Types.DocumentArray<{
+            size: string;
             variantid: string;
             variantName: string;
             additionalPrice: number;
             stock: number;
             color: string;
-            size: string;
         }, import("mongoose").Types.Subdocument<import("bson").ObjectId, any, {
+            size: string;
             variantid: string;
             variantName: string;
             additionalPrice: number;
             stock: number;
             color: string;
-            size: string;
         }> & {
+            size: string;
             variantid: string;
             variantName: string;
             additionalPrice: number;
             stock: number;
             color: string;
-            size: string;
         }>;
         comments: import("mongoose").Types.DocumentArray<{
             date: NativeDate;
@@ -340,7 +340,7 @@ export declare const service: {
         sku: string;
         isFeatured: boolean;
         isNewArrival: boolean;
-        status: "active" | "inactive" | "out_of_stock";
+        status: "inactive" | "active" | "out_of_stock";
         skinType: string[];
         sellerId?: string | null;
         returnPolicy?: string | null;
@@ -352,12 +352,12 @@ export declare const service: {
     } & import("mongoose").DefaultTimestampProps, {}, {
         timestamps: true;
     }> & {
-        brand: string;
         name: string;
+        description: string;
+        brand: string;
         slug: string;
         price: number;
         finalPrice: number;
-        description: string;
         category: string;
         imageUrl: string[];
         tags: string[];
@@ -365,26 +365,26 @@ export declare const service: {
         totalReviews: number;
         averageRating: number;
         variants: import("mongoose").Types.DocumentArray<{
+            size: string;
             variantid: string;
             variantName: string;
             additionalPrice: number;
             stock: number;
             color: string;
-            size: string;
         }, import("mongoose").Types.Subdocument<import("bson").ObjectId, any, {
+            size: string;
             variantid: string;
             variantName: string;
             additionalPrice: number;
             stock: number;
             color: string;
-            size: string;
         }> & {
+            size: string;
             variantid: string;
             variantName: string;
             additionalPrice: number;
             stock: number;
             color: string;
-            size: string;
         }>;
         comments: import("mongoose").Types.DocumentArray<{
             date: NativeDate;
@@ -409,7 +409,7 @@ export declare const service: {
         sku: string;
         isFeatured: boolean;
         isNewArrival: boolean;
-        status: "active" | "inactive" | "out_of_stock";
+        status: "inactive" | "active" | "out_of_stock";
         skinType: string[];
         sellerId?: string | null;
         returnPolicy?: string | null;
@@ -424,12 +424,12 @@ export declare const service: {
         __v: number;
     }) | null>;
     getProductBySearchFromDb: (searchterm: string) => Promise<(import("mongoose").Document<unknown, {}, {
-        brand: string;
         name: string;
+        description: string;
+        brand: string;
         slug: string;
         price: number;
         finalPrice: number;
-        description: string;
         category: string;
         imageUrl: string[];
         tags: string[];
@@ -437,26 +437,26 @@ export declare const service: {
         totalReviews: number;
         averageRating: number;
         variants: import("mongoose").Types.DocumentArray<{
+            size: string;
             variantid: string;
             variantName: string;
             additionalPrice: number;
             stock: number;
             color: string;
-            size: string;
         }, import("mongoose").Types.Subdocument<import("bson").ObjectId, any, {
+            size: string;
             variantid: string;
             variantName: string;
             additionalPrice: number;
             stock: number;
             color: string;
-            size: string;
         }> & {
+            size: string;
             variantid: string;
             variantName: string;
             additionalPrice: number;
             stock: number;
             color: string;
-            size: string;
         }>;
         comments: import("mongoose").Types.DocumentArray<{
             date: NativeDate;
@@ -481,7 +481,7 @@ export declare const service: {
         sku: string;
         isFeatured: boolean;
         isNewArrival: boolean;
-        status: "active" | "inactive" | "out_of_stock";
+        status: "inactive" | "active" | "out_of_stock";
         skinType: string[];
         sellerId?: string | null;
         returnPolicy?: string | null;
@@ -493,12 +493,12 @@ export declare const service: {
     } & import("mongoose").DefaultTimestampProps, {}, {
         timestamps: true;
     }> & {
-        brand: string;
         name: string;
+        description: string;
+        brand: string;
         slug: string;
         price: number;
         finalPrice: number;
-        description: string;
         category: string;
         imageUrl: string[];
         tags: string[];
@@ -506,26 +506,26 @@ export declare const service: {
         totalReviews: number;
         averageRating: number;
         variants: import("mongoose").Types.DocumentArray<{
+            size: string;
             variantid: string;
             variantName: string;
             additionalPrice: number;
             stock: number;
             color: string;
-            size: string;
         }, import("mongoose").Types.Subdocument<import("bson").ObjectId, any, {
+            size: string;
             variantid: string;
             variantName: string;
             additionalPrice: number;
             stock: number;
             color: string;
-            size: string;
         }> & {
+            size: string;
             variantid: string;
             variantName: string;
             additionalPrice: number;
             stock: number;
             color: string;
-            size: string;
         }>;
         comments: import("mongoose").Types.DocumentArray<{
             date: NativeDate;
@@ -550,7 +550,7 @@ export declare const service: {
         sku: string;
         isFeatured: boolean;
         isNewArrival: boolean;
-        status: "active" | "inactive" | "out_of_stock";
+        status: "inactive" | "active" | "out_of_stock";
         skinType: string[];
         sellerId?: string | null;
         returnPolicy?: string | null;
@@ -565,12 +565,12 @@ export declare const service: {
         __v: number;
     })[]>;
     updateInDb: (productId: string, updateData: Partial<product>) => Promise<(import("mongoose").Document<unknown, {}, {
-        brand: string;
         name: string;
+        description: string;
+        brand: string;
         slug: string;
         price: number;
         finalPrice: number;
-        description: string;
         category: string;
         imageUrl: string[];
         tags: string[];
@@ -578,26 +578,26 @@ export declare const service: {
         totalReviews: number;
         averageRating: number;
         variants: import("mongoose").Types.DocumentArray<{
+            size: string;
             variantid: string;
             variantName: string;
             additionalPrice: number;
             stock: number;
             color: string;
-            size: string;
         }, import("mongoose").Types.Subdocument<import("bson").ObjectId, any, {
+            size: string;
             variantid: string;
             variantName: string;
             additionalPrice: number;
             stock: number;
             color: string;
-            size: string;
         }> & {
+            size: string;
             variantid: string;
             variantName: string;
             additionalPrice: number;
             stock: number;
             color: string;
-            size: string;
         }>;
         comments: import("mongoose").Types.DocumentArray<{
             date: NativeDate;
@@ -622,7 +622,7 @@ export declare const service: {
         sku: string;
         isFeatured: boolean;
         isNewArrival: boolean;
-        status: "active" | "inactive" | "out_of_stock";
+        status: "inactive" | "active" | "out_of_stock";
         skinType: string[];
         sellerId?: string | null;
         returnPolicy?: string | null;
@@ -634,12 +634,12 @@ export declare const service: {
     } & import("mongoose").DefaultTimestampProps, {}, {
         timestamps: true;
     }> & {
-        brand: string;
         name: string;
+        description: string;
+        brand: string;
         slug: string;
         price: number;
         finalPrice: number;
-        description: string;
         category: string;
         imageUrl: string[];
         tags: string[];
@@ -647,26 +647,26 @@ export declare const service: {
         totalReviews: number;
         averageRating: number;
         variants: import("mongoose").Types.DocumentArray<{
+            size: string;
             variantid: string;
             variantName: string;
             additionalPrice: number;
             stock: number;
             color: string;
-            size: string;
         }, import("mongoose").Types.Subdocument<import("bson").ObjectId, any, {
+            size: string;
             variantid: string;
             variantName: string;
             additionalPrice: number;
             stock: number;
             color: string;
-            size: string;
         }> & {
+            size: string;
             variantid: string;
             variantName: string;
             additionalPrice: number;
             stock: number;
             color: string;
-            size: string;
         }>;
         comments: import("mongoose").Types.DocumentArray<{
             date: NativeDate;
@@ -691,7 +691,7 @@ export declare const service: {
         sku: string;
         isFeatured: boolean;
         isNewArrival: boolean;
-        status: "active" | "inactive" | "out_of_stock";
+        status: "inactive" | "active" | "out_of_stock";
         skinType: string[];
         sellerId?: string | null;
         returnPolicy?: string | null;
@@ -706,12 +706,12 @@ export declare const service: {
         __v: number;
     }) | null>;
     deleteFromDb: (productId: string) => Promise<(import("mongoose").Document<unknown, {}, {
-        brand: string;
         name: string;
+        description: string;
+        brand: string;
         slug: string;
         price: number;
         finalPrice: number;
-        description: string;
         category: string;
         imageUrl: string[];
         tags: string[];
@@ -719,26 +719,26 @@ export declare const service: {
         totalReviews: number;
         averageRating: number;
         variants: import("mongoose").Types.DocumentArray<{
+            size: string;
             variantid: string;
             variantName: string;
             additionalPrice: number;
             stock: number;
             color: string;
-            size: string;
         }, import("mongoose").Types.Subdocument<import("bson").ObjectId, any, {
+            size: string;
             variantid: string;
             variantName: string;
             additionalPrice: number;
             stock: number;
             color: string;
-            size: string;
         }> & {
+            size: string;
             variantid: string;
             variantName: string;
             additionalPrice: number;
             stock: number;
             color: string;
-            size: string;
         }>;
         comments: import("mongoose").Types.DocumentArray<{
             date: NativeDate;
@@ -763,7 +763,7 @@ export declare const service: {
         sku: string;
         isFeatured: boolean;
         isNewArrival: boolean;
-        status: "active" | "inactive" | "out_of_stock";
+        status: "inactive" | "active" | "out_of_stock";
         skinType: string[];
         sellerId?: string | null;
         returnPolicy?: string | null;
@@ -775,12 +775,12 @@ export declare const service: {
     } & import("mongoose").DefaultTimestampProps, {}, {
         timestamps: true;
     }> & {
-        brand: string;
         name: string;
+        description: string;
+        brand: string;
         slug: string;
         price: number;
         finalPrice: number;
-        description: string;
         category: string;
         imageUrl: string[];
         tags: string[];
@@ -788,26 +788,26 @@ export declare const service: {
         totalReviews: number;
         averageRating: number;
         variants: import("mongoose").Types.DocumentArray<{
+            size: string;
             variantid: string;
             variantName: string;
             additionalPrice: number;
             stock: number;
             color: string;
-            size: string;
         }, import("mongoose").Types.Subdocument<import("bson").ObjectId, any, {
+            size: string;
             variantid: string;
             variantName: string;
             additionalPrice: number;
             stock: number;
             color: string;
-            size: string;
         }> & {
+            size: string;
             variantid: string;
             variantName: string;
             additionalPrice: number;
             stock: number;
             color: string;
-            size: string;
         }>;
         comments: import("mongoose").Types.DocumentArray<{
             date: NativeDate;
@@ -832,7 +832,7 @@ export declare const service: {
         sku: string;
         isFeatured: boolean;
         isNewArrival: boolean;
-        status: "active" | "inactive" | "out_of_stock";
+        status: "inactive" | "active" | "out_of_stock";
         skinType: string[];
         sellerId?: string | null;
         returnPolicy?: string | null;

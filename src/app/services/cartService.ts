@@ -22,6 +22,7 @@ const productToCart = async (productData: cartItem) => {
     cart.pricing.subTotal += productData.finalPrice;
     cart.pricing.payableAmount += productData.finalPrice;
     await cart.save();
+    
  // }
 
   return cart;
