@@ -1,4 +1,5 @@
 import bcrypt from "bcryptjs";
+import crypto from "crypto";
 import UserValidationSchema from "../models/users/userValidation.js";
 import User from "../models/users/userSchema.js";
 import { service } from "../services/userService.js";
@@ -6,7 +7,6 @@ import redis from "../config/redis.js";
 import jwt from "jsonwebtoken";
 const registerUser = async (req, res) => {
     try {
-        // Extract body
         const { role, password, ...rest } = req.body;
         let filteredData = {
             id: crypto.randomUUID(),
@@ -35,9 +35,9 @@ const registerUser = async (req, res) => {
                     .json({ success: false, message: "Invalid Admin Secret Key" });
             }
         }
-        // Validate using Zod
+        // validation
         const validatedUser = UserValidationSchema.parse(filteredData);
-        //  Check for existing email
+        //  existing email
         const existingUser = await User.findOne({ email: validatedUser.email });
         if (existingUser) {
             return res.status(400).json({
@@ -45,9 +45,11 @@ const registerUser = async (req, res) => {
                 message: "User already exists. Please log in instead.",
             });
         }
+        const hashed = await bcrypt.hash(validatedUser.password, 10);
+        validatedUser.password = hashed;
         //  Save user
         const newUser = await service.userToDb({
-            ...validatedUser
+            ...validatedUser,
         });
         return res.status(201).json({
             success: true,
@@ -64,75 +66,182 @@ const registerUser = async (req, res) => {
     }
 };
 const loginUserByEmail = async (req, res) => {
-    const { email, password } = req.body;
-    if (!email || !password) {
-        return res.json({
-            success: false,
-            message: "all the fields are required"
+    try {
+        const { email, password } = req.body;
+        if (!email || !password) {
+            return res.status(400).json({
+                success: false,
+                message: "all the fields are required",
+            });
+        }
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: "User not found",
+            });
+        }
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            return res.status(401).json({
+                success: false,
+                message: "Invalid credentials",
+            });
+        }
+        const role = user.role;
+        const accesstoken = jwt.sign({ email, role }, process.env.JWT_SECRET, {
+            expiresIn: "15m",
+        });
+        const refreshtoken = jwt.sign({ email, role }, process.env.JWT_REFRESH_SECRET, { expiresIn: "2d" });
+        await redis.sAdd(`refreshTokens:${email}`, refreshtoken);
+        await redis.expire(`refreshTokens:${email}`, 2 * 24 * 60 * 60);
+        // set cookies and return once
+        return res
+            .cookie("accesstoken", accesstoken, {
+            httpOnly: true,
+            secure: true,
+            sameSite: "lax",
+        })
+            .cookie("refreshtoken", refreshtoken, {
+            httpOnly: true,
+            secure: true,
+            sameSite: "lax",
+        })
+            .json({
+            success: true,
+            message: "Login successful",
+            accesstoken,
+            refreshtoken,
+            role,
         });
     }
-    // Check if user exists
-    const user = await User.findOne({ email });
-    if (!user) {
-        return res.json({
-            success: false,
-            message: "User not found"
-        });
+    catch (err) {
+        console.error("LoginByEmail Error:", err);
+        return res.status(500).json({ success: false, message: "Server Error" });
     }
-    // Check password
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
-        return res.json({
-            success: false,
-            message: "Invalid credentials"
-        });
-    }
-    const role = user.role;
-    const accesstoken = jwt.sign({ email, role }, process.env.JWT_SECRET, { expiresIn: '15m' });
-    const refreshtoken = jwt.sign({ email, role }, process.env.JWT_REFRESH_SECRET, { expiresIn: '2d' });
-    await redis.sAdd(`refreshTokens:${email}`, refreshtoken);
-    await redis.expire(`refreshTokens:${email}`, 2 * 24 * 60 * 60);
-    res
-        .cookie("accesstoken", accesstoken, { httpOnly: true, secure: true, sameSite: "lax" })
-        .cookie("refreshtoken", refreshtoken, { httpOnly: true, secure: true, sameSite: "lax" })
-        .json({ success: true, accesstoken, refreshtoken, role });
-    return res.json({
-        success: true,
-        message: "Login successful",
-    });
 };
 const loginUserByNumber = async (req, res) => {
-    const { number, password } = req.body;
-    if (!number || !password) {
-        return res.json({
-            success: false,
-            message: "all the fields are required"
+    try {
+        const { number, password } = req.body;
+        if (!number || !password) {
+            return res.status(400).json({
+                success: false,
+                message: "all the fields are required",
+            });
+        }
+        const user = await User.findOne({ phoneNo: number });
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: "User not found",
+            });
+        }
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            return res.status(401).json({
+                success: false,
+                message: "Invalid credentials",
+            });
+        }
+        const role = user.role;
+        const accesstoken = jwt.sign({ number, role }, process.env.JWT_SECRET, {
+            expiresIn: "15m",
+        });
+        // use refresh secret here
+        const refreshtoken = jwt.sign({ number, role }, process.env.JWT_REFRESH_SECRET, { expiresIn: "2d" });
+        await redis.sAdd(`refreshTokens:${number}`, refreshtoken);
+        await redis.expire(`refreshTokens:${number}`, 2 * 24 * 60 * 60);
+        return res
+            .cookie("accesstoken", accesstoken, {
+            httpOnly: true,
+            secure: true,
+            sameSite: "lax",
+        })
+            .cookie("refreshtoken", refreshtoken, {
+            httpOnly: true,
+            secure: true,
+            sameSite: "lax",
+        })
+            .json({
+            success: true,
+            message: "Login successful",
+            accesstoken,
+            refreshtoken,
+            role,
         });
     }
-    // Check if user exists
-    const user = await User.findOne({ number });
-    if (!user) {
+    catch (err) {
+        console.error("LoginByNumber Error:", err);
+        return res.status(500).json({ success: false, message: "Server Error" });
+    }
+};
+const logout = async (req, res) => {
+    try {
+        const { refreshtoken } = req.cookies;
+        if (!refreshtoken)
+            return res.status(400).json({ success: false, message: "No token" });
+        const decoded = jwt.verify(refreshtoken, process.env.JWT_REFRESH_SECRET);
+        if (typeof decoded === "string") {
+            return res
+                .status(400)
+                .json({ success: false, message: "Invalid token format" });
+        }
+        const key = decoded.email
+            ? `refreshTokens:${decoded.email}`
+            : decoded.number
+                ? `refreshTokens:${decoded.number}`
+                : null;
+        if (!key)
+            return res
+                .status(400)
+                .json({ success: false, message: "Invalid token payload" });
+        // remove the specific refresh token once
+        await redis.sRem(key, refreshtoken);
+        res.clearCookie("accesstoken");
+        res.clearCookie("refreshtoken");
+        return res.json({ success: true, message: "Logged out from this device" });
+    }
+    catch (err) {
+        console.error(err);
+        return res.status(500).json({ success: false, message: "Logout failed" });
+    }
+};
+const allDeviceLogout = async (req, res) => {
+    try {
+        const { refreshtoken } = req.cookies;
+        if (!refreshtoken) {
+            return res.json({ success: false, message: "Invalid session" });
+        }
+        const decoded = jwt.verify(refreshtoken, process.env.JWT_REFRESH_SECRET);
+        if (typeof decoded === "string") {
+            return res.json({
+                success: false,
+                message: "invalid format",
+            });
+        }
+        // find identifier then delete all tokens
+        const email = decoded.email ?? decoded.number;
+        if (!email) {
+            return res.status(400).json({ success: false, message: "Invalid token" });
+        }
+        res.clearCookie("accesstoken");
+        res.clearCookie("refreshtoken");
+        await redis.del(`refreshTokens:${email}`);
         return res.json({
-            success: false,
-            message: "User not found"
+            success: true,
+            message: "logged out from all devices",
         });
     }
-    // Check password
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
-        return res.json({
-            success: false,
-            message: "Invalid credentials"
-        });
+    catch (err) {
+        console.error(err);
+        return res.status(500).json({ success: false, message: "Logout failed" });
     }
-    return res.json({
-        success: true,
-        message: "Login successful",
-    });
 };
 export const userController = {
     registerUser,
     loginUserByEmail,
-    loginUserByNumber
+    loginUserByNumber,
+    logout,
+    allDeviceLogout,
 };
 //# sourceMappingURL=user.js.map

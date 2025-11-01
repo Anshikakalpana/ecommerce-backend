@@ -1,0 +1,255 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "My API",
+        "description": "API Documentation",
+        "version": "1.0.0"
+    },
+    "host": "localhost:3000",
+    "basePath": "/",
+    "schemes": [
+        "http"
+    ],
+    "paths": {
+        "/register": {
+            "post": {
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "role": {
+                                    "example": "any"
+                                },
+                                "password": {
+                                    "example": "any"
+                                },
+                                "rest": {
+                                    "example": "any"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/login/email": {
+            "post": {
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "email": {
+                                    "example": "any"
+                                },
+                                "password": {
+                                    "example": "any"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/login/number": {
+            "post": {
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "number": {
+                                    "example": "any"
+                                },
+                                "password": {
+                                    "example": "any"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/{productId}": {
+            "post": {
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "productId",
+                        "in": "path",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "quantity": {
+                                    "example": "any"
+                                },
+                                "variantId": {
+                                    "example": "any"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/api/products/create": {
+            "post": {
+                "description": "",
+                "responses": {
+                    "201": {
+                        "description": "Created"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/api/products/getall": {
+            "get": {
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/products/search": {
+            "get": {
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/products/{id}": {
+            "get": {
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/products/update/{id}": {
+            "put": {
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/api/products/delete/{id}": {
+            "delete": {
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        }
+    }
+}

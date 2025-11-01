@@ -316,3 +316,4 @@
 // export { router as authRouter };
 
 
+//npx ts-node src/swagger.ts

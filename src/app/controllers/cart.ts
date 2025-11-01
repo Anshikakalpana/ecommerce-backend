@@ -8,13 +8,13 @@ import Product from "../models/products/productSchema.js";
 
 const createProductForCart = async (req: any, res: any) => {
   try {
-    // const userId = req.user?.id || req.body.userId;
-    // if (!userId) {
-    //   return res.status(400).json({
-    //     success: false,
-    //     message: "User ID is required",
-    //   });
-    // }
+    const userId = req.user?.id || req.body.userId;
+    if (!userId) {
+      return res.status(400).json({
+        success: false,
+        message: "User ID is required",
+      });
+    }
 
     const productId: string = req.params.productId;
     const validatedProduct: CartItem = cartItemSchema.parse(req.body);

@@ -2,27 +2,36 @@ import express from 'express';
 import cors from 'cors';
 import 'dotenv/config';
 import dotenv from 'dotenv';
+import cookieParser from 'cookie-parser'
+
+import swaggerUi from "swagger-ui-express";
+import swaggerDocument from "./swagger-output.json" with { type: "json" };
+
 import { connectRedis } from './app/config/redis.js';
-import { productRoute } from './app/routes/products/productRoute.js';
-import { cartRoute } from './app/routes/cart/cartRoute.js';
-import { userRouter } from './app/routes/users/userRoute.js';
+import { productRoute } from './app/routes/productRoute.js';
+import { cartRoute } from './app/routes/cartRoute.js';
+import { userRouter } from './app/routes/userRoute.js';
+
+
 const app=express();
+
+app.use(express.json());
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
 const PORT=3000;
 dotenv.config();
 
 app.use(cors());
-app.use(express.json());
 
+app.use(cookieParser());
 connectRedis();
 app.get('/',(req,res)=>{
-    res.send('aaj jaane ki zid na kuuuu hi pehlu mein baithe raho');
+    res.send('fuckk off');
 })
-app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
-});
 
 
- app.use('/api/products' , productRoute)
+
+  app.use('/api/products', productRoute);
   app.use('/api/cartitems' , cartRoute)
   app.use('/api/users' , userRouter)
 export default app;
