@@ -1,4 +1,5 @@
 export type cart = {
+    userId: string;
     items: cartItem[];
     pricing: cartPricing;
     createdAt: Date;
@@ -6,17 +7,16 @@ export type cart = {
 };
 export type cartItem = {
     productId: string;
-    variantId?: string;
     brand: string;
     name: string;
-    slug?: string;
-    imageUrl?: string;
+    slug?: string | undefined;
+    imageUrl?: string | undefined;
     quantity: number;
     unitPrice: number;
-    originalPrice?: number;
+    originalPrice?: number | undefined;
     finalPrice: number;
-    stockAtTime?: number;
-    maxAllowedPerOrder?: number;
+    stockAtTime?: number | undefined;
+    maxAllowedPerOrder?: number | undefined;
 };
 export type cartPricing = {
     subTotal: number;

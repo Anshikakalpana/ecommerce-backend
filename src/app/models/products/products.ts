@@ -13,7 +13,7 @@ export type product = {
     inStock: boolean;
     totalReviews: number;
     averageRating: number;
-    variants: productVariant[];
+   
     comments?: productComment[];
     ingredients?: string[];
     sku: string;
@@ -33,14 +33,6 @@ export type product = {
 };
 
 
-export type productVariant={
-    variantid:string;
-    variantName:string;
-    additionalPrice:number;
-    stock:number;
-    color:string;
-    size:string;
-}
 
 export type productComment= {
   userid: string;

@@ -5,21 +5,17 @@ import { type cartItem } from "../models/cart/cart.js";
 import Product from "../models/products/productSchema.js";
 
 
-
 const createProductForCart = async (req: any, res: any) => {
   try {
-    const userId = req.user?.id || req.body.userId;
+    const userId = req.user?.id;
     if (!userId) {
-      return res.status(400).json({
+      return res.status(401).json({ 
         success: false,
-        message: "User ID is required",
+        message: "Unauthorized: User ID missing or invalid token",
       });
     }
 
     const productId: string = req.params.productId;
-    const validatedProduct: CartItem = cartItemSchema.parse(req.body);
-
-    
     const product = await Product.findById(productId);
     if (!product) {
       return res.status(404).json({
@@ -30,24 +26,25 @@ const createProductForCart = async (req: any, res: any) => {
 
     const { quantity, variantId } = req.body;
 
-  
     const productToAdd: cartItem = {
       productId: product._id.toString(),
-      variantId: variantId ?? undefined,
+     
       brand: product.brand,
-      name: product.name,          
-      quantity: quantity ?? 1,     
+      name: product.name,
+      quantity: quantity ?? 1,
       unitPrice: product.price,
-      finalPrice: product.finalPrice,  
+      finalPrice: product.finalPrice,
       ...(product.slug && { slug: product.slug }),
-      ...(product.imageUrl?.length && { imageUrl: product.imageUrl[0] }), 
-      ...(validatedProduct.originalPrice && { originalPrice: validatedProduct.originalPrice }),
-      ...(validatedProduct.stockAtTime !== undefined && { stockAtTime: validatedProduct.stockAtTime }),
-      ...(validatedProduct.maxAllowedPerOrder !== undefined && { maxAllowedPerOrder: validatedProduct.maxAllowedPerOrder }),
+      ...(product.imageUrl?.length && { imageUrl: product.imageUrl[0] }),
+      ...(req.body.originalPrice && { originalPrice: req.body.originalPrice }),
+      ...(req.body.stockAtTime !== undefined && { stockAtTime: req.body.stockAtTime }),
+      ...(req.body.maxAllowedPerOrder !== undefined && { maxAllowedPerOrder: req.body.maxAllowedPerOrder }),
     };
 
+   
+    const validatedProduct: CartItem = cartItemSchema.parse(productToAdd);
 
-    const result = await service.productToCart( productToAdd);
+    const result = await service.productToCart(userId, validatedProduct);
 
     return res.status(201).json({
       success: true,
@@ -62,8 +59,62 @@ const createProductForCart = async (req: any, res: any) => {
   }
 };
 
-export const cartController={
-createProductForCart
+const deleteProductFromCart = async (req:any, res:any) => {
+  try {
+    const userId = req.user?.id; 
+    const productId = req.params.productId; 
+
+    if (!userId || !productId) {
+      return res.status(400).json({ success: false, message: "User ID or Product ID missing" });
+    }
+
+    const result = await service.deleteProductFromCart(userId, productId);
+
+    if (!result) {
+      return res.status(404).json({ success: false, message: "Cart or product not found" });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Product removed from cart successfully",
+      data: result,
+    });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: "couldnt delete product" });
+  }
+};
+
+const getCart= async (req:any, res:any) => {
+  try{
+    const userId = req.user?.id;
+    if(!userId){
+      return res.status(401).json({
+        success:false,
+        message:"Unauthorized: User ID missing or invalid token"
+      });
+    }
+    const result = await service.getCart(userId);
+    if(!result){
+      return res.status(404).json({
+        success:false,
+        message:"Cart not found"
+      });
+    }
+    return res.status(200).json({
+      success: true,
+      message: "Cart retrieved successfully",
+      data: result,
+    });
+  }catch(error){
+    return res.status(500).json({
+      success:false,
+      message:"Internal Server Error"
+    });
+  }
 }
 
-
+export const cartController = {
+  createProductForCart,
+  deleteProductFromCart,
+  getCart
+};

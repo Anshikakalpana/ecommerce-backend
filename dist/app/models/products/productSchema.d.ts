@@ -12,28 +12,6 @@ declare const _default: mongoose.Model<{
     inStock: boolean;
     totalReviews: number;
     averageRating: number;
-    variants: mongoose.Types.DocumentArray<{
-        size: string;
-        variantid: string;
-        variantName: string;
-        additionalPrice: number;
-        stock: number;
-        color: string;
-    }, mongoose.Types.Subdocument<mongoose.mongo.BSON.ObjectId, any, {
-        size: string;
-        variantid: string;
-        variantName: string;
-        additionalPrice: number;
-        stock: number;
-        color: string;
-    }> & {
-        size: string;
-        variantid: string;
-        variantName: string;
-        additionalPrice: number;
-        stock: number;
-        color: string;
-    }>;
     comments: mongoose.Types.DocumentArray<{
         date: NativeDate;
         userid: string;
@@ -79,28 +57,6 @@ declare const _default: mongoose.Model<{
     inStock: boolean;
     totalReviews: number;
     averageRating: number;
-    variants: mongoose.Types.DocumentArray<{
-        size: string;
-        variantid: string;
-        variantName: string;
-        additionalPrice: number;
-        stock: number;
-        color: string;
-    }, mongoose.Types.Subdocument<mongoose.mongo.BSON.ObjectId, any, {
-        size: string;
-        variantid: string;
-        variantName: string;
-        additionalPrice: number;
-        stock: number;
-        color: string;
-    }> & {
-        size: string;
-        variantid: string;
-        variantName: string;
-        additionalPrice: number;
-        stock: number;
-        color: string;
-    }>;
     comments: mongoose.Types.DocumentArray<{
         date: NativeDate;
         userid: string;
@@ -148,28 +104,6 @@ declare const _default: mongoose.Model<{
     inStock: boolean;
     totalReviews: number;
     averageRating: number;
-    variants: mongoose.Types.DocumentArray<{
-        size: string;
-        variantid: string;
-        variantName: string;
-        additionalPrice: number;
-        stock: number;
-        color: string;
-    }, mongoose.Types.Subdocument<mongoose.mongo.BSON.ObjectId, any, {
-        size: string;
-        variantid: string;
-        variantName: string;
-        additionalPrice: number;
-        stock: number;
-        color: string;
-    }> & {
-        size: string;
-        variantid: string;
-        variantName: string;
-        additionalPrice: number;
-        stock: number;
-        color: string;
-    }>;
     comments: mongoose.Types.DocumentArray<{
         date: NativeDate;
         userid: string;
@@ -221,28 +155,6 @@ declare const _default: mongoose.Model<{
     inStock: boolean;
     totalReviews: number;
     averageRating: number;
-    variants: mongoose.Types.DocumentArray<{
-        size: string;
-        variantid: string;
-        variantName: string;
-        additionalPrice: number;
-        stock: number;
-        color: string;
-    }, mongoose.Types.Subdocument<mongoose.mongo.BSON.ObjectId, any, {
-        size: string;
-        variantid: string;
-        variantName: string;
-        additionalPrice: number;
-        stock: number;
-        color: string;
-    }> & {
-        size: string;
-        variantid: string;
-        variantName: string;
-        additionalPrice: number;
-        stock: number;
-        color: string;
-    }>;
     comments: mongoose.Types.DocumentArray<{
         date: NativeDate;
         userid: string;
@@ -288,28 +200,6 @@ declare const _default: mongoose.Model<{
     inStock: boolean;
     totalReviews: number;
     averageRating: number;
-    variants: mongoose.Types.DocumentArray<{
-        size: string;
-        variantid: string;
-        variantName: string;
-        additionalPrice: number;
-        stock: number;
-        color: string;
-    }, mongoose.Types.Subdocument<mongoose.mongo.BSON.ObjectId, any, {
-        size: string;
-        variantid: string;
-        variantName: string;
-        additionalPrice: number;
-        stock: number;
-        color: string;
-    }> & {
-        size: string;
-        variantid: string;
-        variantName: string;
-        additionalPrice: number;
-        stock: number;
-        color: string;
-    }>;
     comments: mongoose.Types.DocumentArray<{
         date: NativeDate;
         userid: string;
@@ -357,28 +247,6 @@ declare const _default: mongoose.Model<{
     inStock: boolean;
     totalReviews: number;
     averageRating: number;
-    variants: mongoose.Types.DocumentArray<{
-        size: string;
-        variantid: string;
-        variantName: string;
-        additionalPrice: number;
-        stock: number;
-        color: string;
-    }, mongoose.Types.Subdocument<mongoose.mongo.BSON.ObjectId, any, {
-        size: string;
-        variantid: string;
-        variantName: string;
-        additionalPrice: number;
-        stock: number;
-        color: string;
-    }> & {
-        size: string;
-        variantid: string;
-        variantName: string;
-        additionalPrice: number;
-        stock: number;
-        color: string;
-    }>;
     comments: mongoose.Types.DocumentArray<{
         date: NativeDate;
         userid: string;

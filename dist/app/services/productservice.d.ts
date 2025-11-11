@@ -13,28 +13,6 @@ export declare const service: {
         inStock: boolean;
         totalReviews: number;
         averageRating: number;
-        variants: import("mongoose").Types.DocumentArray<{
-            size: string;
-            variantid: string;
-            variantName: string;
-            additionalPrice: number;
-            stock: number;
-            color: string;
-        }, import("mongoose").Types.Subdocument<import("bson").ObjectId, any, {
-            size: string;
-            variantid: string;
-            variantName: string;
-            additionalPrice: number;
-            stock: number;
-            color: string;
-        }> & {
-            size: string;
-            variantid: string;
-            variantName: string;
-            additionalPrice: number;
-            stock: number;
-            color: string;
-        }>;
         comments: import("mongoose").Types.DocumentArray<{
             date: NativeDate;
             userid: string;
@@ -82,28 +60,6 @@ export declare const service: {
         inStock: boolean;
         totalReviews: number;
         averageRating: number;
-        variants: import("mongoose").Types.DocumentArray<{
-            size: string;
-            variantid: string;
-            variantName: string;
-            additionalPrice: number;
-            stock: number;
-            color: string;
-        }, import("mongoose").Types.Subdocument<import("bson").ObjectId, any, {
-            size: string;
-            variantid: string;
-            variantName: string;
-            additionalPrice: number;
-            stock: number;
-            color: string;
-        }> & {
-            size: string;
-            variantid: string;
-            variantName: string;
-            additionalPrice: number;
-            stock: number;
-            color: string;
-        }>;
         comments: import("mongoose").Types.DocumentArray<{
             date: NativeDate;
             userid: string;
@@ -154,28 +110,6 @@ export declare const service: {
         inStock: boolean;
         totalReviews: number;
         averageRating: number;
-        variants: import("mongoose").Types.DocumentArray<{
-            size: string;
-            variantid: string;
-            variantName: string;
-            additionalPrice: number;
-            stock: number;
-            color: string;
-        }, import("mongoose").Types.Subdocument<import("bson").ObjectId, any, {
-            size: string;
-            variantid: string;
-            variantName: string;
-            additionalPrice: number;
-            stock: number;
-            color: string;
-        }> & {
-            size: string;
-            variantid: string;
-            variantName: string;
-            additionalPrice: number;
-            stock: number;
-            color: string;
-        }>;
         comments: import("mongoose").Types.DocumentArray<{
             date: NativeDate;
             userid: string;
@@ -223,28 +157,6 @@ export declare const service: {
         inStock: boolean;
         totalReviews: number;
         averageRating: number;
-        variants: import("mongoose").Types.DocumentArray<{
-            size: string;
-            variantid: string;
-            variantName: string;
-            additionalPrice: number;
-            stock: number;
-            color: string;
-        }, import("mongoose").Types.Subdocument<import("bson").ObjectId, any, {
-            size: string;
-            variantid: string;
-            variantName: string;
-            additionalPrice: number;
-            stock: number;
-            color: string;
-        }> & {
-            size: string;
-            variantid: string;
-            variantName: string;
-            additionalPrice: number;
-            stock: number;
-            color: string;
-        }>;
         comments: import("mongoose").Types.DocumentArray<{
             date: NativeDate;
             userid: string;
@@ -295,28 +207,6 @@ export declare const service: {
         inStock: boolean;
         totalReviews: number;
         averageRating: number;
-        variants: import("mongoose").Types.DocumentArray<{
-            size: string;
-            variantid: string;
-            variantName: string;
-            additionalPrice: number;
-            stock: number;
-            color: string;
-        }, import("mongoose").Types.Subdocument<import("bson").ObjectId, any, {
-            size: string;
-            variantid: string;
-            variantName: string;
-            additionalPrice: number;
-            stock: number;
-            color: string;
-        }> & {
-            size: string;
-            variantid: string;
-            variantName: string;
-            additionalPrice: number;
-            stock: number;
-            color: string;
-        }>;
         comments: import("mongoose").Types.DocumentArray<{
             date: NativeDate;
             userid: string;
@@ -364,28 +254,6 @@ export declare const service: {
         inStock: boolean;
         totalReviews: number;
         averageRating: number;
-        variants: import("mongoose").Types.DocumentArray<{
-            size: string;
-            variantid: string;
-            variantName: string;
-            additionalPrice: number;
-            stock: number;
-            color: string;
-        }, import("mongoose").Types.Subdocument<import("bson").ObjectId, any, {
-            size: string;
-            variantid: string;
-            variantName: string;
-            additionalPrice: number;
-            stock: number;
-            color: string;
-        }> & {
-            size: string;
-            variantid: string;
-            variantName: string;
-            additionalPrice: number;
-            stock: number;
-            color: string;
-        }>;
         comments: import("mongoose").Types.DocumentArray<{
             date: NativeDate;
             userid: string;
@@ -436,28 +304,6 @@ export declare const service: {
         inStock: boolean;
         totalReviews: number;
         averageRating: number;
-        variants: import("mongoose").Types.DocumentArray<{
-            size: string;
-            variantid: string;
-            variantName: string;
-            additionalPrice: number;
-            stock: number;
-            color: string;
-        }, import("mongoose").Types.Subdocument<import("bson").ObjectId, any, {
-            size: string;
-            variantid: string;
-            variantName: string;
-            additionalPrice: number;
-            stock: number;
-            color: string;
-        }> & {
-            size: string;
-            variantid: string;
-            variantName: string;
-            additionalPrice: number;
-            stock: number;
-            color: string;
-        }>;
         comments: import("mongoose").Types.DocumentArray<{
             date: NativeDate;
             userid: string;
@@ -505,28 +351,6 @@ export declare const service: {
         inStock: boolean;
         totalReviews: number;
         averageRating: number;
-        variants: import("mongoose").Types.DocumentArray<{
-            size: string;
-            variantid: string;
-            variantName: string;
-            additionalPrice: number;
-            stock: number;
-            color: string;
-        }, import("mongoose").Types.Subdocument<import("bson").ObjectId, any, {
-            size: string;
-            variantid: string;
-            variantName: string;
-            additionalPrice: number;
-            stock: number;
-            color: string;
-        }> & {
-            size: string;
-            variantid: string;
-            variantName: string;
-            additionalPrice: number;
-            stock: number;
-            color: string;
-        }>;
         comments: import("mongoose").Types.DocumentArray<{
             date: NativeDate;
             userid: string;
@@ -577,28 +401,6 @@ export declare const service: {
         inStock: boolean;
         totalReviews: number;
         averageRating: number;
-        variants: import("mongoose").Types.DocumentArray<{
-            size: string;
-            variantid: string;
-            variantName: string;
-            additionalPrice: number;
-            stock: number;
-            color: string;
-        }, import("mongoose").Types.Subdocument<import("bson").ObjectId, any, {
-            size: string;
-            variantid: string;
-            variantName: string;
-            additionalPrice: number;
-            stock: number;
-            color: string;
-        }> & {
-            size: string;
-            variantid: string;
-            variantName: string;
-            additionalPrice: number;
-            stock: number;
-            color: string;
-        }>;
         comments: import("mongoose").Types.DocumentArray<{
             date: NativeDate;
             userid: string;
@@ -646,28 +448,6 @@ export declare const service: {
         inStock: boolean;
         totalReviews: number;
         averageRating: number;
-        variants: import("mongoose").Types.DocumentArray<{
-            size: string;
-            variantid: string;
-            variantName: string;
-            additionalPrice: number;
-            stock: number;
-            color: string;
-        }, import("mongoose").Types.Subdocument<import("bson").ObjectId, any, {
-            size: string;
-            variantid: string;
-            variantName: string;
-            additionalPrice: number;
-            stock: number;
-            color: string;
-        }> & {
-            size: string;
-            variantid: string;
-            variantName: string;
-            additionalPrice: number;
-            stock: number;
-            color: string;
-        }>;
         comments: import("mongoose").Types.DocumentArray<{
             date: NativeDate;
             userid: string;
@@ -718,28 +498,6 @@ export declare const service: {
         inStock: boolean;
         totalReviews: number;
         averageRating: number;
-        variants: import("mongoose").Types.DocumentArray<{
-            size: string;
-            variantid: string;
-            variantName: string;
-            additionalPrice: number;
-            stock: number;
-            color: string;
-        }, import("mongoose").Types.Subdocument<import("bson").ObjectId, any, {
-            size: string;
-            variantid: string;
-            variantName: string;
-            additionalPrice: number;
-            stock: number;
-            color: string;
-        }> & {
-            size: string;
-            variantid: string;
-            variantName: string;
-            additionalPrice: number;
-            stock: number;
-            color: string;
-        }>;
         comments: import("mongoose").Types.DocumentArray<{
             date: NativeDate;
             userid: string;
@@ -787,28 +545,6 @@ export declare const service: {
         inStock: boolean;
         totalReviews: number;
         averageRating: number;
-        variants: import("mongoose").Types.DocumentArray<{
-            size: string;
-            variantid: string;
-            variantName: string;
-            additionalPrice: number;
-            stock: number;
-            color: string;
-        }, import("mongoose").Types.Subdocument<import("bson").ObjectId, any, {
-            size: string;
-            variantid: string;
-            variantName: string;
-            additionalPrice: number;
-            stock: number;
-            color: string;
-        }> & {
-            size: string;
-            variantid: string;
-            variantName: string;
-            additionalPrice: number;
-            stock: number;
-            color: string;
-        }>;
         comments: import("mongoose").Types.DocumentArray<{
             date: NativeDate;
             userid: string;

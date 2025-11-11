@@ -5,7 +5,7 @@ import { type cart, type cartItem, type cartPricing } from "./cart.js";
 // CartItem Schema
 const cartItemSchema = new Schema<cartItem>({
   productId: { type: String, required: true },
-  variantId: { type: String, required: false },
+  
 
   brand: { type: String, required: true },
   name: { type: String, required: true },
@@ -36,7 +36,7 @@ const cartPricingSchema = new Schema<cartPricing>({
 // Cart Schema
 const cartSchema = new Schema<cart>(
   {
-  //  userId: { type: String, required: true, unique: true },
+   userId: { type: String, required: true, unique: true },
    items: { type: [cartItemSchema], required: true },
     pricing: { type: cartPricingSchema, required: true },
   },

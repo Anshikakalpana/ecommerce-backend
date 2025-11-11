@@ -12,14 +12,6 @@ declare const productValidationSchema: z.ZodObject<{
     inStock: z.ZodDefault<z.ZodBoolean>;
     totalReviews: z.ZodDefault<z.ZodNumber>;
     averageRating: z.ZodDefault<z.ZodNumber>;
-    variants: z.ZodDefault<z.ZodArray<z.ZodObject<{
-        variantid: z.ZodString;
-        variantName: z.ZodString;
-        additionalPrice: z.ZodNumber;
-        stock: z.ZodNumber;
-        color: z.ZodString;
-        size: z.ZodString;
-    }, z.core.$strip>>>;
     comments: z.ZodDefault<z.ZodArray<z.ZodObject<{
         userid: z.ZodString;
         rating: z.ZodNumber;

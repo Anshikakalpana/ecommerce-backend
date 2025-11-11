@@ -12,17 +12,6 @@ const commentSchema = new Schema(
   { _id: false }
 );
 
-const variantSchema = new Schema(
-  {
-    variantid: { type: String, required: true },
-    variantName: { type: String, required: true },
-    additionalPrice: { type: Number, required: true },
-    stock: { type: Number, required: true },
-    color: { type: String, required: true },
-    size: { type: String, required: true },
-  },
-  { _id: false }
-);
 
 
 const productSchema = new Schema(
@@ -41,7 +30,7 @@ const productSchema = new Schema(
     inStock: { type: Boolean, default: true },
     totalReviews: { type: Number, default: 0 },
     averageRating: { type: Number, default: 0 },
-    variants: { type: [variantSchema], default: [] },
+    
     comments: { type: [commentSchema], default: [] },
     ingredients: { type: [String] },
     sku: { type: String, required: true },

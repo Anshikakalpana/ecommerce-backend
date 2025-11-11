@@ -29,6 +29,7 @@ const registerUser = async (req: any, res: any) => {
           .status(400)
           .json({ success: false, message: "Seller details are required" });
       }
+      
       filteredData.sellerDetails = rest.sellerDetails;
     } else if (role === "admin") {
       if (rest.secretKey !== process.env.ADMIN_SECRET_KEY) {
@@ -104,15 +105,17 @@ const loginUserByEmail = async (req: any, res: any) => {
     }
 
     const role = user.role;
-    const accesstoken = jwt.sign({ email, role }, process.env.JWT_SECRET!, {
-      expiresIn: "15m",
-    });
-    const refreshtoken = jwt.sign(
-      { email, role },
-      process.env.JWT_REFRESH_SECRET!,
-      { expiresIn: "2d" }
-    );
+    const accesstoken = jwt.sign(
+  { id: user._id, email, role },
+  process.env.JWT_SECRET!,
+  { expiresIn: "15m" }
+);
 
+const refreshtoken = jwt.sign(
+  { id: user._id, email, role },
+  process.env.JWT_REFRESH_SECRET!,
+  { expiresIn: "2d" }
+);
     await redis.sAdd(`refreshTokens:${email}`, refreshtoken);
     await redis.expire(`refreshTokens:${email}`, 2 * 24 * 60 * 60);
 
@@ -120,12 +123,12 @@ const loginUserByEmail = async (req: any, res: any) => {
     return res
       .cookie("accesstoken", accesstoken, {
         httpOnly: true,
-        secure: true,
+        secure: false,
         sameSite: "lax",
       })
       .cookie("refreshtoken", refreshtoken, {
         httpOnly: true,
-        secure: true,
+        secure: false,
         sameSite: "lax",
       })
       .json({
@@ -170,11 +173,11 @@ const loginUserByNumber = async (req: any, res: any) => {
     }
 
     const role = user.role;
-    const accesstoken = jwt.sign({ number, role }, process.env.JWT_SECRET!, {
+    const accesstoken = jwt.sign({ id: user._id, number, role }, process.env.JWT_SECRET!, {
       expiresIn: "15m",
     });
 
-    // use refresh secret here
+   
     const refreshtoken = jwt.sign(
       { number, role },
       process.env.JWT_REFRESH_SECRET!,
@@ -208,6 +211,57 @@ const loginUserByNumber = async (req: any, res: any) => {
   }
 };
 
+
+const refreshToken = async (req: any, res: any) => {
+  try {
+    const { refreshtoken } = req.cookies;
+
+    if (!refreshtoken) {
+      return res.status(401).json({ success: false, message: "Missing refresh token" });
+    }
+
+    const decoded = jwt.verify(refreshtoken, process.env.JWT_REFRESH_SECRET!);
+    const field = (decoded as any).email || (decoded as any).number;
+    const key = (decoded as any).email  ? `refreshTokens:${(decoded as any).email}` : `refreshTokens:${(decoded as any).number}`;
+    const userId = (decoded as any).id;
+
+    const isMember = await redis.sIsMember(key, refreshtoken);
+    if (!isMember) {
+      res.clearCookie("accesstoken");
+      res.clearCookie("refreshtoken");
+      return res.status(403).json({ success: false, message: "Invalid session" });
+    }
+
+    const newAccessToken = jwt.sign(
+      { id: userId, email: (decoded as any).email, number: (decoded as any).number, role:(decoded as any).role },
+      process.env.JWT_SECRET!,
+      { expiresIn: "15m" }
+    );
+
+    const newRefreshToken = jwt.sign(
+      { id: userId, email: (decoded as any).email, number: (decoded as any).number, role: (decoded as any).role },
+      process.env.JWT_REFRESH_SECRET!,
+      { expiresIn: "7d" }
+    );
+
+    await redis.sRem(key, refreshtoken);
+    await redis.sAdd(key, newRefreshToken);
+    await redis.expire(key, 7 * 24 * 60 * 60);
+
+    res.cookie("accesstoken", newAccessToken, { httpOnly: true, secure: true, sameSite: "lax" });
+    res.cookie("refreshtoken", newRefreshToken, { httpOnly: true, secure: true, sameSite: "lax" });
+
+    return res.json({ success: true, accesstoken: newAccessToken });
+  } catch (err) {
+    console.error("RefreshToken Error:", err);
+    res.clearCookie("accesstoken");
+    res.clearCookie("refreshtoken");
+    return res.status(403).json({ success: false, message: "Invalid or expired refresh token" });
+  }
+};
+
+
+
 const logout = async (req: any, res: any) => {
   try {
     const { refreshtoken } = req.cookies;
@@ -233,7 +287,7 @@ const logout = async (req: any, res: any) => {
         .status(400)
         .json({ success: false, message: "Invalid token payload" });
 
-    // remove the specific refresh token once
+ 
     await redis.sRem(key, refreshtoken);
 
     res.clearCookie("accesstoken");
@@ -262,7 +316,7 @@ const allDeviceLogout = async (req: any, res: any) => {
       });
     }
 
-    // find identifier then delete all tokens
+    
     const email = (decoded as any).email ?? (decoded as any).number;
     if (!email) {
       return res.status(400).json({ success: false, message: "Invalid token" });

@@ -1,12 +1,4 @@
 import { z } from "zod";
-const variantValidationSchema = z.object({
-    variantid: z.string().min(1),
-    variantName: z.string().min(2).max(100),
-    additionalPrice: z.number().min(0),
-    stock: z.number().min(0),
-    color: z.string().min(2).max(50),
-    size: z.string().min(1).max(50),
-});
 const dateSchema = z.preprocess((val) => {
     if (typeof val === "string" || typeof val === "number")
         return new Date(val);
@@ -31,7 +23,6 @@ const productValidationSchema = z.object({
     inStock: z.boolean().default(true),
     totalReviews: z.number().min(0).default(0),
     averageRating: z.number().min(0).max(5).default(0),
-    variants: z.array(variantValidationSchema).default([]),
     comments: z.array(commentValidationSchema).default([]),
     ingredients: z.array(z.string()).optional(),
     sku: z.string().min(1),

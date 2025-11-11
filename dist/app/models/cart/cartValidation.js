@@ -1,7 +1,6 @@
 import { z } from "zod";
 export const cartItemSchema = z.object({
     productId: z.string().min(1),
-    variantId: z.string().min(1),
     brand: z.string().min(1),
     name: z.string().min(1),
     slug: z.string().optional(),
@@ -21,7 +20,7 @@ export const cartPricingSchema = z.object({
     payableAmount: z.number().min(0),
 });
 export const cartValidationSchema = z.object({
-    // userId: z.string().min(1),
+    userId: z.string().min(1),
     items: z.array(cartItemSchema).min(1),
     pricing: cartPricingSchema,
     createdAt: z.date().optional(),

@@ -5,7 +5,7 @@ import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser'
 
 import swaggerUi from "swagger-ui-express";
-import swaggerDocument from "./swagger-output.json" with { type: "json" };
+import swaggerFile from "./swagger-output.json" with { type: "json" };
 
 import { connectRedis } from './app/config/redis.js';
 import { productRoute } from './app/routes/productRoute.js';
@@ -16,17 +16,18 @@ import { userRouter } from './app/routes/userRoute.js';
 const app=express();
 
 app.use(express.json());
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
 const PORT=3000;
 dotenv.config();
-
 app.use(cors());
+
+
 
 app.use(cookieParser());
 connectRedis();
 app.get('/',(req,res)=>{
-    res.send('fuckk off');
+    res.send('Server is running');
 })
 
 

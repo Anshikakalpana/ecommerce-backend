@@ -1,30 +1,77 @@
 import Cart from "../models/cart/cartSchema.js";
-const productToCart = async (productData) => {
-    const productToCart = async (userId, productData) => {
-        let cart = await Cart.findOne({ userId });
-        if (!cart) {
-            let cart = await Cart.create({
-                userId,
-                items: [productData],
-                pricing: {
-                    subTotal: productData.finalPrice,
-                    tax: 0,
-                    discount: 0,
-                    deliveryCharge: 0,
-                    payableAmount: productData.finalPrice
-                }
-            });
+import redis from "../config/redis.js";
+const recalculateCartPricing = (cart) => {
+    const subTotal = cart.items.reduce((sum, item) => sum + (item.finalPrice ?? 0) * (item.quantity ?? 1), 0);
+    const taxRate = 0.1;
+    const discount = cart.pricing?.discount || 0;
+    const tax = subTotal * taxRate;
+    const deliveryCharge = cart.pricing?.deliveryCharge || 0;
+    cart.pricing.subTotal = subTotal;
+    cart.pricing.tax = tax;
+    cart.pricing.discount = discount;
+    cart.pricing.deliveryCharge = deliveryCharge;
+    cart.pricing.payableAmount = subTotal + tax + deliveryCharge - discount;
+};
+const productToCart = async (userId, productData) => {
+    let cart = await Cart.findOne({ userId: userId.toString() });
+    if (!cart) {
+        cart = await Cart.create({
+            userId: userId.toString(),
+            items: [productData],
+            pricing: {
+                subTotal: productData.finalPrice * productData.quantity,
+                tax: 0,
+                discount: 0,
+                deliveryCharge: 0,
+                payableAmount: productData.finalPrice * productData.quantity,
+            },
+        });
+    }
+    else {
+        const existingItem = cart.items.find((item) => item.productId.toString() === productData.productId.toString());
+        if (existingItem) {
+            existingItem.quantity += productData.quantity;
+            existingItem.finalPrice =
+                productData.finalPrice * existingItem.quantity;
         }
         else {
             cart.items.push(productData);
-            cart.pricing.subTotal += productData.finalPrice;
-            cart.pricing.payableAmount += productData.finalPrice;
-            await cart.save();
         }
-        return cart;
-    };
+        recalculateCartPricing(cart);
+        await cart.save();
+    }
+    await redis.set(`cart:${userId}`, JSON.stringify(cart));
+    return cart;
+};
+const getCart = async (userId) => {
+    const redisCart = await redis.get(`cart:${userId}`);
+    if (redisCart) {
+        return JSON.parse(redisCart);
+    }
+    const dbCart = await Cart.findOne({ userId: userId.toString() });
+    if (dbCart) {
+        await redis.set(`cart:${userId}`, JSON.stringify(dbCart.toObject()), { EX: 3600 });
+    }
+    return dbCart;
+};
+const deleteProductFromCart = async (userId, productId) => {
+    let cart = await Cart.findOne({ userId: userId.toString() });
+    if (!cart) {
+        return null;
+    }
+    const updatedItems = cart.items.filter((item) => item.productId.toString() !== productId.toString());
+    if (updatedItems.length === cart.items.length) {
+        return { message: "Product not found in cart", success: false };
+    }
+    cart.items = updatedItems;
+    recalculateCartPricing(cart);
+    await cart.save();
+    await redis.set(`cart:${userId}`, JSON.stringify(cart.toObject()), { EX: 3000 });
+    return { success: true, message: "Product removed successfully", data: cart };
 };
 export const service = {
     productToCart,
+    getCart,
+    deleteProductFromCart
 };
 //# sourceMappingURL=cartService.js.map

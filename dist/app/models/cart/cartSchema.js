@@ -2,7 +2,6 @@ import mongoose, { Schema } from "mongoose";
 // CartItem Schema
 const cartItemSchema = new Schema({
     productId: { type: String, required: true },
-    variantId: { type: String, required: false },
     brand: { type: String, required: true },
     name: { type: String, required: true },
     slug: { type: String, required: false },
@@ -24,7 +23,7 @@ const cartPricingSchema = new Schema({
 });
 // Cart Schema
 const cartSchema = new Schema({
-    //  userId: { type: String, required: true, unique: true },
+    userId: { type: String, required: true, unique: true },
     items: { type: [cartItemSchema], required: true },
     pricing: { type: cartPricingSchema, required: true },
 }, { timestamps: true });

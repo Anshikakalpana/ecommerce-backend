@@ -1,8 +1,6 @@
 import User from "../models/users/userSchema.js";
-import bcrypt from "bcryptjs";
 export const userToDb = async (userData) => {
-    const hashedPassword = await bcrypt.hash(userData.password, 10);
-    const newUser = { ...userData, password: hashedPassword };
+    const newUser = { ...userData };
     const result = await User.create(newUser);
     const { password, ...safeUser } = result.toObject();
     return safeUser;

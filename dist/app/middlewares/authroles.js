@@ -1,27 +1,101 @@
-// import pool from "../db/dbData.js";
-export {};
-// export const authorizeRoles = (...allowedRoles) => {
-//   return async (req, res, next) => {
-//     try {
-//       const email = req.user.email; 
-//       const userRolesQuery = await pool.query(
-//         `SELECT r.name 
-//          FROM roles r 
-//          JOIN user_roles ur ON ur.role_id = r.id
-//          JOIN users u ON u.id = ur.user_id
-//          WHERE u.email=$1`,
-//         [email]
-//       );
-//       const userRoles = userRolesQuery.rows.map(r => r.name);
-//       const hasRole = allowedRoles.some(role => userRoles.includes(role));
-//       if (!hasRole) {
-//         return res.status(403).json({ success: false, message: "Access denied" });
-//       }
-//       next();
-//     } catch (err) {
-//       console.error(err);
-//       res.status(500).json({ success: false, message: "Server error" });
-//     }
-//   };
-// };
+export const authroleBuyer = async (req, res, next) => {
+    try {
+        const userId = req.user?.id;
+        if (!userId) {
+            return res.json({
+                success: false,
+                message: "User not found",
+            });
+        }
+        const role = req.user.role;
+        if (role !== "buyer") {
+            return res.json({
+                success: false,
+                message: "Access denied: only buyers can perform this action",
+            });
+        }
+        next();
+    }
+    catch (err) {
+        return res.json({
+            success: false,
+            message: "Error validating user role",
+        });
+    }
+};
+export const authroleSeller = async (req, res, next) => {
+    try {
+        const userId = req.user?.id;
+        if (!userId) {
+            return res.json({
+                success: false,
+                message: "User not found",
+            });
+        }
+        const role = req.user.role;
+        if (role !== "seller") {
+            return res.json({
+                success: false,
+                message: "Access denied: only sellers can perform this action",
+            });
+        }
+        next();
+    }
+    catch (err) {
+        return res.json({
+            success: false,
+            message: "Error validating user role",
+        });
+    }
+};
+export const authroleAdmin = async (req, res, next) => {
+    try {
+        const userId = req.user?.id;
+        if (!userId) {
+            return res.json({
+                success: false,
+                message: "User not found",
+            });
+        }
+        const role = req.user.role;
+        if (role !== "admin") {
+            return res.json({
+                success: false,
+                message: "Access denied: only admin can perform this action",
+            });
+        }
+        next();
+    }
+    catch (err) {
+        return res.json({
+            success: false,
+            message: "Error validating user role",
+        });
+    }
+};
+export const authroleCustomerCare = async (req, res, next) => {
+    try {
+        const userId = req.user?.id;
+        if (!userId) {
+            return res.json({
+                success: false,
+                message: "User not found",
+            });
+        }
+        const role = req.user.role;
+        if (role !== "customer_service") {
+            return res.json({
+                success: false,
+                message: "Access denied: only customer service can perform this action",
+            });
+        }
+        next();
+    }
+    catch (err) {
+        return res.json({
+            success: false,
+            message: "Error validating user role",
+        });
+    }
+};
 //# sourceMappingURL=authroles.js.map

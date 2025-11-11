@@ -1,7 +1,6 @@
 import { z } from "zod";
 export declare const cartItemSchema: z.ZodObject<{
     productId: z.ZodString;
-    variantId: z.ZodString;
     brand: z.ZodString;
     name: z.ZodString;
     slug: z.ZodOptional<z.ZodString>;
@@ -21,9 +20,9 @@ export declare const cartPricingSchema: z.ZodObject<{
     payableAmount: z.ZodNumber;
 }, z.core.$strip>;
 export declare const cartValidationSchema: z.ZodObject<{
+    userId: z.ZodString;
     items: z.ZodArray<z.ZodObject<{
         productId: z.ZodString;
-        variantId: z.ZodString;
         brand: z.ZodString;
         name: z.ZodString;
         slug: z.ZodOptional<z.ZodString>;
@@ -49,9 +48,9 @@ export type CartInput = z.infer<typeof cartValidationSchema>;
 export type CartItem = z.infer<typeof cartItemSchema>;
 declare const _default: {
     cartValidationSchema: z.ZodObject<{
+        userId: z.ZodString;
         items: z.ZodArray<z.ZodObject<{
             productId: z.ZodString;
-            variantId: z.ZodString;
             brand: z.ZodString;
             name: z.ZodString;
             slug: z.ZodOptional<z.ZodString>;
@@ -75,7 +74,6 @@ declare const _default: {
     }, z.core.$strip>;
     cartItemSchema: z.ZodObject<{
         productId: z.ZodString;
-        variantId: z.ZodString;
         brand: z.ZodString;
         name: z.ZodString;
         slug: z.ZodOptional<z.ZodString>;

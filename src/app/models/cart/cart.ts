@@ -1,38 +1,36 @@
+
+
+
 export type cart = {
- // userId: string;
+   userId: string;
   items: cartItem[];
-  pricing: cartPricing;  
+  pricing: cartPricing;
   createdAt: Date;
   updatedAt: Date;
 };
 
-
 export type cartItem = {
   productId: string;
-  variantId?: string;
-
+ 
   brand: string;
   name: string;
-  slug?: string;
-  imageUrl?: string;
+  slug?: string | undefined;
+  imageUrl?: string | undefined;
 
   quantity: number;
 
-  unitPrice: number;          
-  originalPrice?: number;     
-  finalPrice: number;        
+  unitPrice: number;
+  originalPrice?: number | undefined;
+  finalPrice: number;
 
-  stockAtTime?: number;       
-  maxAllowedPerOrder?: number;
+  stockAtTime?: number | undefined;
+  maxAllowedPerOrder?: number | undefined;
 };
-
 
 export type cartPricing = {
-  subTotal: number;         
-  tax: number;               
-  discount: number;         
-  deliveryCharge: number;   
-  payableAmount: number;   
+  subTotal: number;
+  tax: number;
+  discount: number;
+  deliveryCharge: number;
+  payableAmount: number;
 };
-
-

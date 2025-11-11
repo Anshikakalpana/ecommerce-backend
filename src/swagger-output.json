@@ -2,252 +2,194 @@
   "swagger": "2.0",
   "info": {
     "title": "My API",
-    "description": "API Documentation",
+    "description": "API Documentation for Users, Products, and CartItems",
     "version": "1.0.0"
   },
   "host": "localhost:3000",
-  "basePath": "/",
-  "schemes": [
-    "http"
-  ],
+  "basePath": "/api",
+  "schemes": ["http"],
   "paths": {
-    "/register": {
+    "/users/register": {
       "post": {
-        "description": "",
+        "summary": "Register new user",
+        "description": "Registers a new user with email, password, and role.",
         "parameters": [
           {
-            "name": "body",
             "in": "body",
+            "name": "body",
             "schema": {
               "type": "object",
               "properties": {
-                "role": {
-                  "example": "any"
-                },
-                "password": {
-                  "example": "any"
-                },
-                "rest": {
-                  "example": "any"
-                }
+                "role": { "type": "string", "example": "seller" },
+                "email": { "type": "string", "example": "user@example.com" },
+                "password": { "type": "string", "example": "123456" }
               }
             }
           }
         ],
         "responses": {
-          "201": {
-            "description": "Created"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "403": {
-            "description": "Forbidden"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
+          "201": { "description": "User created" },
+          "400": { "description": "Bad Request" },
+          "500": { "description": "Internal Server Error" }
         }
       }
     },
-    "/login/email": {
+    "/users/login/email": {
       "post": {
-        "description": "",
+        "summary": "Login by email",
         "parameters": [
           {
-            "name": "body",
             "in": "body",
+            "name": "body",
             "schema": {
               "type": "object",
               "properties": {
-                "email": {
-                  "example": "any"
-                },
-                "password": {
-                  "example": "any"
-                }
+                "email": { "type": "string", "example": "user@example.com" },
+                "password": { "type": "string", "example": "123456" }
               }
             }
           }
         ],
         "responses": {
-          "400": {
-            "description": "Bad Request"
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
+          "200": { "description": "Login successful" },
+          "401": { "description": "Invalid credentials" },
+          "404": { "description": "User not found" }
         }
       }
     },
-    "/login/number": {
+    "/users/login/number": {
       "post": {
-        "description": "",
+        "summary": "Login by phone number",
         "parameters": [
           {
-            "name": "body",
             "in": "body",
+            "name": "body",
             "schema": {
               "type": "object",
               "properties": {
-                "number": {
-                  "example": "any"
-                },
-                "password": {
-                  "example": "any"
-                }
+                "number": { "type": "string", "example": "9876543210" },
+                "password": { "type": "string", "example": "123456" }
               }
             }
           }
         ],
         "responses": {
-          "400": {
-            "description": "Bad Request"
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
+          "200": { "description": "Login successful" },
+          "401": { "description": "Invalid credentials" },
+          "404": { "description": "User not found" }
         }
       }
     },
-    "/{productId}": {
+    "/users/logout": {
       "post": {
-        "description": "",
+        "summary": "Logout current device",
+        "responses": {
+          "200": { "description": "Logged out successfully" },
+          "400": { "description": "Bad Request" }
+        }
+      }
+    },
+    "/users/alldevicelogout": {
+      "post": {
+        "summary": "Logout from all devices",
+        "responses": {
+          "200": { "description": "Logged out from all devices" }
+        }
+      }
+    },
+    "/products/createproduct": {
+      "post": {
+        "summary": "Create a new product",
+        "responses": {
+          "201": { "description": "Product created successfully" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
+    "/products/getallproducts": {
+      "get": {
+        "summary": "Get all products",
+        "responses": {
+          "200": { "description": "List of products returned" }
+        }
+      }
+    },
+    "/products/searchproduct": {
+      "get": {
+        "summary": "Search products",
+        "responses": {
+          "200": { "description": "Search results returned" }
+        }
+      }
+    },
+    "/products/{id}": {
+      "get": {
+        "summary": "Get product by ID",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "type": "string" }
+        ],
+        "responses": {
+          "200": { "description": "Product found" },
+          "404": { "description": "Not found" }
+        }
+      }
+    },
+    "/products/updateproduct/{id}": {
+      "put": {
+        "summary": "Update a product",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "type": "string" }
+        ],
+        "responses": {
+          "200": { "description": "Product updated" }
+        }
+      }
+    },
+    "/products/deleteproduct/{id}": {
+      "delete": {
+        "summary": "Delete a product",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "type": "string" }
+        ],
+        "responses": {
+          "200": { "description": "Product deleted" },
+          "404": { "description": "Product not found" }
+        }
+      }
+    },
+    "/cartitems/proforcar/{productId}": {
+      "post": {
+        "summary": "Add product to cart",
         "parameters": [
           {
             "name": "productId",
             "in": "path",
             "required": true,
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "quantity": {
-                  "example": "any"
-                },
-                "variantId": {
-                  "example": "any"
-                }
-              }
-            }
+            "type": "string",
+            "description": "Product ID to add to cart"
           }
         ],
         "responses": {
-          "201": {
-            "description": "Created"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
+          "200": { "description": "Product added to cart" },
+          "401": { "description": "Unauthorized" }
         }
       }
     },
-    "/api/products/create": {
-      "post": {
-        "description": "",
-        "responses": {
-          "201": {
-            "description": "Created"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      }
-    },
-    "/api/products/getall": {
-      "get": {
-        "description": "",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/products/search": {
-      "get": {
-        "description": "",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/products/{id}": {
-      "get": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/products/update/{id}": {
-      "put": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      }
-    },
-    "/api/products/delete/{id}": {
+    "/cartitems/deleteprofromcart/{productId}": {
       "delete": {
-        "description": "",
+        "summary": "Delete product from cart",
         "parameters": [
           {
-            "name": "id",
+            "name": "productId",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "string",
+            "description": "Product ID to remove from cart"
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
-          }
+          "200": { "description": "Product removed from cart" },
+          "401": { "description": "Unauthorized" }
         }
       }
     }

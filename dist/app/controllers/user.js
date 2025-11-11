@@ -81,6 +81,8 @@ const loginUserByEmail = async (req, res) => {
                 message: "User not found",
             });
         }
+        const ip = req.socket?.remoteAddress || req.ip;
+        console.log(ip.slice(0, 8));
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
             return res.status(401).json({
@@ -89,22 +91,20 @@ const loginUserByEmail = async (req, res) => {
             });
         }
         const role = user.role;
-        const accesstoken = jwt.sign({ email, role }, process.env.JWT_SECRET, {
-            expiresIn: "15m",
-        });
-        const refreshtoken = jwt.sign({ email, role }, process.env.JWT_REFRESH_SECRET, { expiresIn: "2d" });
+        const accesstoken = jwt.sign({ id: user._id, email, role }, process.env.JWT_SECRET, { expiresIn: "15m" });
+        const refreshtoken = jwt.sign({ id: user._id, email, role }, process.env.JWT_REFRESH_SECRET, { expiresIn: "2d" });
         await redis.sAdd(`refreshTokens:${email}`, refreshtoken);
         await redis.expire(`refreshTokens:${email}`, 2 * 24 * 60 * 60);
         // set cookies and return once
         return res
             .cookie("accesstoken", accesstoken, {
             httpOnly: true,
-            secure: true,
+            secure: false,
             sameSite: "lax",
         })
             .cookie("refreshtoken", refreshtoken, {
             httpOnly: true,
-            secure: true,
+            secure: false,
             sameSite: "lax",
         })
             .json({
@@ -144,10 +144,9 @@ const loginUserByNumber = async (req, res) => {
             });
         }
         const role = user.role;
-        const accesstoken = jwt.sign({ number, role }, process.env.JWT_SECRET, {
+        const accesstoken = jwt.sign({ id: user._id, number, role }, process.env.JWT_SECRET, {
             expiresIn: "15m",
         });
-        // use refresh secret here
         const refreshtoken = jwt.sign({ number, role }, process.env.JWT_REFRESH_SECRET, { expiresIn: "2d" });
         await redis.sAdd(`refreshTokens:${number}`, refreshtoken);
         await redis.expire(`refreshTokens:${number}`, 2 * 24 * 60 * 60);
@@ -175,6 +174,38 @@ const loginUserByNumber = async (req, res) => {
         return res.status(500).json({ success: false, message: "Server Error" });
     }
 };
+const refreshToken = async (req, res) => {
+    try {
+        const { refreshtoken } = req.cookies;
+        if (!refreshtoken) {
+            return res.status(401).json({ success: false, message: "Missing refresh token" });
+        }
+        const decoded = jwt.verify(refreshtoken, process.env.JWT_REFRESH_SECRET);
+        const field = decoded.email || decoded.number;
+        const key = decoded.email ? `refreshTokens:${decoded.email}` : `refreshTokens:${decoded.number}`;
+        const userId = decoded.id;
+        const isMember = await redis.sIsMember(key, refreshtoken);
+        if (!isMember) {
+            res.clearCookie("accesstoken");
+            res.clearCookie("refreshtoken");
+            return res.status(403).json({ success: false, message: "Invalid session" });
+        }
+        const newAccessToken = jwt.sign({ id: userId, email: decoded.email, number: decoded.number, role: decoded.role }, process.env.JWT_SECRET, { expiresIn: "15m" });
+        const newRefreshToken = jwt.sign({ id: userId, email: decoded.email, number: decoded.number, role: decoded.role }, process.env.JWT_REFRESH_SECRET, { expiresIn: "7d" });
+        await redis.sRem(key, refreshtoken);
+        await redis.sAdd(key, newRefreshToken);
+        await redis.expire(key, 7 * 24 * 60 * 60);
+        res.cookie("accesstoken", newAccessToken, { httpOnly: true, secure: true, sameSite: "lax" });
+        res.cookie("refreshtoken", newRefreshToken, { httpOnly: true, secure: true, sameSite: "lax" });
+        return res.json({ success: true, accesstoken: newAccessToken });
+    }
+    catch (err) {
+        console.error("RefreshToken Error:", err);
+        res.clearCookie("accesstoken");
+        res.clearCookie("refreshtoken");
+        return res.status(403).json({ success: false, message: "Invalid or expired refresh token" });
+    }
+};
 const logout = async (req, res) => {
     try {
         const { refreshtoken } = req.cookies;
@@ -195,7 +226,6 @@ const logout = async (req, res) => {
             return res
                 .status(400)
                 .json({ success: false, message: "Invalid token payload" });
-        // remove the specific refresh token once
         await redis.sRem(key, refreshtoken);
         res.clearCookie("accesstoken");
         res.clearCookie("refreshtoken");
@@ -219,7 +249,6 @@ const allDeviceLogout = async (req, res) => {
                 message: "invalid format",
             });
         }
-        // find identifier then delete all tokens
         const email = decoded.email ?? decoded.number;
         if (!email) {
             return res.status(400).json({ success: false, message: "Invalid token" });

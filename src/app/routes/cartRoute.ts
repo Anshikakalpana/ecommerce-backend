@@ -1,13 +1,10 @@
 import express from "express"
 import { cartController } from "../controllers/cart.js";
+import authMiddleware from "../middlewares/authMiddleware.js";
+import { authroleBuyer } from "../middlewares/authroles.js";
 const router = express.Router();
 
-router.post('/:productId' ,cartController.createProductForCart)
-// router.get('/' ,productController.getAllProducts)
-// router.get('/search' ,productController.getProductBySearch)
-// router.get('/:id' ,productController.getProductById)
-
-// router.put('/:id' , productController.updateProduct)
-
-// router.delete('/:id' , productController.deleteProduct)
+router.post('/proforcar/:productId' ,authMiddleware,authroleBuyer, cartController.createProductForCart)
+router.delete('/deleteprofromcart/:productId' ,authMiddleware,authroleBuyer, cartController.deleteProductFromCart)
+router.get('/getcart' ,authMiddleware,authroleBuyer, cartController.getCart)
 export const cartRoute = router;

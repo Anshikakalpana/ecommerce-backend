@@ -1,25 +1,41 @@
-import jwt  from 'jsonwebtoken'
-const authMiddleware= (req:any, res:any, next:any)=>{
- 
+import jwt, { JwtPayload } from 'jsonwebtoken';
 
-    const authHeader = req.headers.authorization
-    if(!authHeader || !authHeader.startsWith('Bearer')){
-        return res.send({
-            success:false,
-            message:"token is missing"
-        })
-    }
-        const token = authHeader.split(' ')[1];
-        try {
-  const decodedId = jwt.verify(token, process.env.JWT_SECRET!);
-  req.user = decodedId;
-  next();
-} catch (err) {
-  return res.status(401).json({ success: false, message: 'Invalid or expired token' });
-}
+const authMiddleware = (req: any, res: any, next: any) => {
+  let token;
 
 
-}
+  const authHeader = req.headers.authorization;
+  if (authHeader && authHeader.startsWith('Bearer ')) {
+    token = authHeader.split(' ')[1];
+  }
+
+  
+  if (!token && req.cookies?.accesstoken) {
+    token = req.cookies.accesstoken;
+  }
+
+  if (!token) {
+    return res.status(401).json({
+      success: false,
+      message: 'Token is missing or invalid format',
+    });
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET!) as JwtPayload & { id?: string };
+    req.user = { id: decoded.id, email: decoded.email, role: decoded.role };
+    next();
+  } catch {
+    return res.status(401).json({
+      success: false,
+      message: 'Invalid or expired token',
+    });
+  }
+};
+
+export default authMiddleware;
+
+
 
 const verifyrefreshtoken=(req:any, res:any, next:any)=>{
     const token = req.body.token;
