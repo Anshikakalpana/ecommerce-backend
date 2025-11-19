@@ -1,6 +1,8 @@
 import Cart from "../models/cart/cartSchema.js";
 import type { cartItem } from "../models/cart/cart.js";
 import redis from "../config/redis.js";
+import { resolve } from "path";
+import { response } from "express";
 
 const recalculateCartPricing = (cart: any) => {
   
@@ -23,6 +25,7 @@ const recalculateCartPricing = (cart: any) => {
 
 // adding product to cart
 const productToCart = async (userId: string, productData: cartItem) => {
+  try{
 let cart = await Cart.findOne({ userId: userId.toString() });
 
 if (!cart) {
@@ -62,9 +65,17 @@ if (!cart) {
    
   }
   
- await redis.set(`cart:${userId}`, JSON.stringify(cart));
+ await redis.set(`cart:${userId}`, JSON.stringify(cart) , {EX:3000});
 
   return cart;
+}
+  catch(err){
+   return response.json({
+    message:"cant add product to route"
+   })
+
+
+  }
 };
 
 // fetch cart
@@ -80,7 +91,7 @@ const getCart = async (userId: string) => {
 
   if (dbCart) {
   
-    await redis.set(`cart:${userId}`, JSON.stringify(dbCart.toObject()), { EX: 3600 }); 
+    await redis.set(`cart:${userId}`, JSON.stringify(dbCart.toObject()), { EX: 3000 }); 
   }
 
   return dbCart;
